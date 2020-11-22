@@ -14,7 +14,7 @@ In this project bla bla bla
 #+attr_html: :width 700
 #+attr_org: :width 700
 [[./doc/img/uml-classes.png]]
-*** Tests
+*** TODO Tests
 
 
 ** Installation
@@ -30,8 +30,111 @@ communication.
 
 *** PROJ Make the Server
 Implement the Server that the professor will execute.
-**** TODO ...
+**** TODO Make tests for Question
++ [ ] Make test for isCorrectAnswer
+  - [ ] If the integer is the correct answer, then return True
+  - [ ] Else return False
++ [ ] Make getQuestion
+  Returns a multiline string as:
+    #+begin_src python
+return """ Question
+           - [0]: Choice 0
+           - [1]: Choice 1
+           - [2]: Choice 2
+           [ ... ]
+"""
+    #+end_src
++ [ ] Make static parseLine
+  - [ ] Test for a correct string with 3 choice
+  - [ ] Test a correct string with 4 choices
+  - [ ] Test an incorrect string with 1 choice
+  - [ ] Test an unparsable string
+  - [ ] Test an incorrect string with "Question;Correct choice"
 
+**** TODO Make Question
++ [ ] Make question final
++ [ ] Make the fields
++ [ ] Make the methods
++ [ ] Make the static function parseLine, that given a question
+  line parses a String
+  
+**** TODO Make tests for UserSession
++ [ ] Test Creation of UserSession: integers are 0 and 0,
+  and different creations the UserSession are equal.
++ [ ] Test nextQuestionCorrect: both integers are summed 1 and 1.
++ [ ] Test nextQuestion: only the actual question is incremented.
+  
+**** TODO Make UserSession
++ [ ] Make the UserSession final: this will let the compiler make
+  the necessary optimizations.
++ [ ] Make the fields
++ [ ] Make the methods
+  
+**** TODO Make tests for SessionMakerImpl
++ [ ] Test newSession:
+  - [ ] Adds an entry to users, with the passes Id and a new UserSession.
+  - [ ] Test that this behavior with more than one user.
+  - [ ] Test that a student that tries to create a session for the second
+    time does not break anything.
+  - [ ] Adds an entry to the client map.
+    
++ [ ] Test answerQuestion
+  - [ ] test that an answer calls:
+    + [ ] The corresponding ~Question~ with ~isCorrectAnswer~. Make an interface to test
+      this.
+    + [ ] The corresponding ~UserSession~ calls ~nextQuestionCorrect~ if ~isCorrectAnswer~ is
+      ~True~, and ~nextQuestion~ if ~isCorrectAnswer~ is ~False~.
++ [ ] Test ~hasNext~
+  - [ ] Test that it calls
+    + [ ] ~UserSession.getActualSession~ is called
+  - [ ] Returns that the ~actualQuestion~ is smaller than ~question~
++ [ ] Test ~next~
+  - [ ] Returns a ~Question~
+  - [ ] Throws an error if the ~Question~ does not exist
++ [ ] Test ~finishExam~.
+  - [ ] Test that calls all finishExam that are in the map, even if some fail
+    with a remote exception.
+
+**** TODO Implement SessionMakerImpl
++ [ ] ~answerQuestion~
++ [ ] ~newSession~
++ [ ] ~hasNext~
++ [ ] ~next~
++ [ ] ~finishExam~
+
+
+**** TODO Test Professor
+First search if you can use mockito to mock IO by user.
++ [ ] Test this pseudocode
+  #+begin_src 
+main = do
+    inputfile, outputfile <- args
+    session <- SessionMaker $ parseQuestion inputfile
+    startExam <- readLn
+    finishTheExam <- readLn
+    finishExam outputfile session
+  #+end_src
+**** TODO Implement Professor
+
+*** TODO Make Client
+**** TODO Make Client Promise Test
++ [ ] ~finishExam~ calls:
+  - [ ] ~System.println~ with the string with the score.
+  - [ ] ~System.exit~ to exit the client
+**** TODO Make Client Promise
+**** TODO Make Student executable
+Test the calls of this pseudocode:
+#+begin_src 
+main = do
+        id <- readLn
+        client <- ClientPromise
+        sessionMaker.newSession(id, client)
+        while sessionMaker.hasNext(id):
+            question <- sessionMaker.next(id)
+            printLn $ question
+            answer <- readLn
+            sessionMaker.answerQuestion(id, answer)
+#+end_src
 
 ** Technologies used
 - For the executable project, we used the technologies:
@@ -40,6 +143,8 @@ Implement the Server that the professor will execute.
 
 - For the tests, we used:
   + JUnit 5
+  + Mockito
+    
 
 - For the documentation, we used the Emacs org-mode:
   + org-mode

@@ -94,6 +94,7 @@ class Question {
     - correctAnswer: Integer
     + isCorrectAnswer(choice: Integer): Bool
     + getQuestion(): String
+    + static parseLine(question: String): Question
 }
 
 class UserSession {
@@ -134,7 +135,7 @@ Student -- SessionMaker
 Student -- ClientPromise
 #+end_src
 
-#+RESULTS:
+#+attr_org: :width 700
 [[file:img/uml-classes.png]]
 
 #+caption: Class UML
@@ -154,11 +155,6 @@ class Student {
     }
 }
 
-main { input outputfile
-    session <- SessionMaker
-    startExam <- readLn
-    finishExam <- readLn
-}
 
 #+end_src    
 
