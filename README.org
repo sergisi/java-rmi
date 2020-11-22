@@ -157,6 +157,6 @@ main = do
 + sergisi
 
 ** License
-
+This is distributed with GPLv3. More about the license can be found at [[./LICENSE]]
   
   
