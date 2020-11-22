@@ -1,0 +1,57 @@
+#+TITLE: Java RMI: An Online Exam
+
+** Description
+In this project bla bla bla
+
+*** UML sequence
+#+caption: UML Sequence diagram
+#+attr_html: :width 700
+#+attr_org: :width 700
+[[./doc/img/uml-flow.png]]
+
+*** UML classes
+#+caption: UML Classes diagram
+#+attr_html: :width 700
+#+attr_org: :width 700
+[[./doc/img/uml-classes.png]]
+*** Tests
+
+
+** Installation
+
+** Usage
+
+** Roadmap
+*** PROJ Define Common
+Define the interfaces which the Server and the Client will rely on the
+communication.
+**** TODO Define ClientPromise
+**** TODO Define SessionMaker
+
+*** PROJ Make the Server
+Implement the Server that the professor will execute.
+**** TODO ...
+
+
+** Technologies used
+- For the executable project, we used the technologies:
+  + Java 1.8
+  + Java RMI
+
+- For the tests, we used:
+  + JUnit 5
+
+- For the documentation, we used the Emacs org-mode:
+  + org-mode
+  + plantUML
+  We recommend to use Doom Emacs or Spacemacs for this.
+  
+** Authors and acknowledgment
++ iancalvo
++ quimpm
++ sergisi
+
+** License
+
+  
+  

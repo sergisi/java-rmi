@@ -1,0 +1,165 @@
+#+TITLE: UML
+#+author: quimpm, iancalvo, sergisi
+
+* Workflow
+1. Professor starts aplication with inputs:
+   + Input file to be read.
+   + Output file to be written.
+2. Server processes input file and create:
+   + Questions
+   + SessionMaker, which is also registered at
+     RMI
+3. Students register with an ID and a Connection
+   object.
+4. Session Maker saves and creates an UserSession.
+5. When professor starts the exam:
+   + SessionMaker does not accept new connections.
+   + Starts 6
+     
+6. The student gets a new question.
+7. The student answers the question.
+8. Professor terminates the exam or student finishes the
+   exam.
+9. Student gets the final score
+
+* UML Flow diagram
+
+#+begin_src plantuml :file img/uml-flow.png :dir .
+!define BASEPATH .
+!include BASEPATH/global/stylesheet.puml
+actor Student order 0
+participant Client order 10
+participant Server order 20
+actor Professor order 30
+
+Professor -> Server : newSession(questions)
+Student -> Client : newSession(idStudent)
+activate Client
+
+Client -> Server : newSession(idStudent)
+Client <-- Server: Ok
+Student <-- Client: Waiting to start the exam
+deactivate Client
+Professor <-- Server : A new Student has connected n_students
+
+Professor -> Server: startExam()
+Server -> Client: firstQuestion()
+
+Student <-- Client: Starting the exam
+    
+loop hasNext(idStudent) or finished exam
+    Client -> Server: next(idStudent)
+    Client <-- Server : Question
+    Student <-- Client: Question
+    Student -> Client: answerQuestion(answer)
+    Client -> Server: answerQuestion(idStudent, answer)
+end
+
+Professor -> Server: finishExam()
+Server -> Client: finishExam(correctAnswers, totalAnswers)
+
+Student <-- Client: Finished exam with score x/y
+
+Professor <-- Server: Scores for the exam.
+#+end_src
+
+#+RESULTS:
+[[file:img/uml-flow.png]]
+
+* UML Classes diagram
+
+#+BEGIN_SRC plantuml :file img/uml-classes.png :dir .
+'General Defaults
+!define BASEPATH .
+!include BASEPATH/global/stylesheet.puml
+
+note top of SessionMaker : type alias IdStudent = String
+interface SessionMaker {
+    + newSession(idStudet: IdStudent, client: ClientPromise): void
+    + answerQuestion(idStudent: IdStudent, answer: Integer): void
+    + hasNext(idStudent: IdStudent): Boolean
+    + next(idStudent: IdStudent): String
+}
+
+class SessionMakerImpl {
+    - question: ArrayList<Question>
+    - users: HashMap<IdStudent, UserSession>
+    - client: HashMap<IdStudent, ClientPromise>
+    ~ finishExam(): void
+}
+
+class Question {
+    - question: String
+    - choices: ArrayList<String>
+    - correctAnswer: Integer
+    + isCorrectAnswer(choice: Integer): Bool
+    + getQuestion(): String
+}
+
+class UserSession {
+    - correctAnswers: Integer
+    - actualQuestion: Integer
+    + nextQuestionCorrect(): UserSession
+    + nextQuestion(): UserSession
+}
+
+class Professor {
+    + static main(args: String[])
+}
+
+interface ClientPromise {
+    + finishExam(correctAnswer: Integer, totalQuestions: Integer): void
+}
+
+class ClientPromiseImpl {
+    
+}
+
+class Student {
+    + static main(args: String[])
+}
+
+SessionMakerImpl *-- Question
+SessionMakerImpl *-- UserSession
+SessionMakerImpl *-- ClientPromise
+
+SessionMaker <|-- SessionMakerImpl
+
+Professor -- SessionMakerImpl
+
+ClientPromise <|-- ClientPromiseImpl
+
+Student -- SessionMaker
+
+Student -- ClientPromise
+#+end_src
+
+#+RESULTS:
+[[file:img/uml-classes.png]]
+
+#+caption: Class UML
+[[file:uml-classes.png]]
+   
+#+begin_src 
+class Student {
+    + static main(String[] args) {
+        id <- readLn
+        client <- ClientPromise
+        sessionMaker.newSession(id, client)
+        while sessionMaker.hasNext(id):
+            question <- sessionMaker.next(id)
+            printLn $ question
+            answer <- readLn
+            sessionMaker.answerQuestion(id, answer)
+    }
+}
+
+main { input outputfile
+    session <- SessionMaker
+    startExam <- readLn
+    finishExam <- readLn
+}
+
+#+end_src    
+
+
