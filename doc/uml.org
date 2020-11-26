@@ -84,10 +84,13 @@ Introduction
 
 ** Classes
 + Professor :: Runnable
-  - Runnable
-  - S'introdueix ~inputfile~ com a arg 0.
-  - S'intordueix ~outputfile~ com a arg 1.
+  It will be a runnable that will take as its first parameter the input file containing
+  the questions and answers of the exam. The second parameter will be the path to the output
+  file where the results will be stored. It's the part that will start the server side.
 + Student :: Runnable
+
+  Much like Professor, it will be the part that will start the client side. In this case it 
+  has no parameters, and it is also a runnable.
 + Question :: Question stores in the server the formated question
   as a multiline string that has the following formatting:
   #+begin_src text
@@ -102,17 +105,20 @@ Question?
   Finally, this class will contain a static method to parse the line
   from the format file to the one stored in the server. It can be
   seen as a static ~Builder~.
+
 + UserSession ::
-  - És final: perque es final
-    + Compilador acabarà fent la mutabilitat ell
-    + La mutabiltat passa a ser explícita, que en sistemes
-      concurrents i / o distribuïts facilita la programació.
+  This class is the one that will store the state of the client session.
+  We decide it to make it final, becouse the compiler will notice at the lower
+  level and turn it mutable, and we will be able to enjoy the advantages of 
+  immutability at the time to do concurrency.
   
 + SessionMakerImpl :: 
-  - startExam
-  - finishExam
-  - Resolem les interaccions entre question, usersession i SessionMaker
-    com a ArrayList, hashmap...
+  This class holds the implementation of the SessionMaker Interface and also has two additional
+  methods, startExam and finishExam. This functions are for ~Professor~ to start and end the exam.
+  In ~SessionMaker~ we manage the interactions between the classes:
+  - ~Question~ :: It will be stored as an ~ArrayList~
+  - ~UserSession~ :: It will be stored in a ~HashMap<IdStudent, UserSession>~
+  - ~ClientPromise~ :: It will be stored in a ~HashMap<IdStudent, ClientPromise>~
 
 + ClientPromiseImpl :: It provides an implementation of the Remote interface
   ~ClientPromise~. ~finishExam~ method will end the execution of the main
