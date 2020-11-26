@@ -23,11 +23,16 @@
 !include BASEPATH/global/stylesheet.puml
 actor Student order 0
 participant Client order 10
+participant RMIRegistry order 15
 participant Server order 20
 actor Professor order 30
 
 Professor -> Server : newSession(questions)
+Server -> RMIRegistry : bind("SessionMaker", sessionMaker)
+activate RMIRegistry
 Student -> Client : newSession(idStudent)
+Client -> RMIRegistry : lookup("SessionMaker")
+RMIRegistry --> Client : SessionMaker class
 activate Client
 
 Client -> Server : newSession(idStudent)
@@ -55,7 +60,11 @@ Server -> Client: finishExam(correctAnswers, totalAnswers)
 Student <-- Client: Finished exam with score x/y
 
 Professor <-- Server: Scores for the exam.
+deactivate RMIRegistry
 #+end_src
+
+#+RESULTS:
+[[file:img/uml-flow.png]]
 
 #+attr_org: :width 700
 #+caption: UML Sequence diagram
@@ -152,6 +161,13 @@ class Student {
     + static main(args: String[])
 }
 
+interface Remote {
+}
+
+Remote <|-- ClientPromise
+
+Remote <|-- SessionMaker
+    
 SessionMakerImpl *-- Question
 SessionMakerImpl *-- UserSession
 SessionMakerImpl *-- ClientPromise
@@ -168,6 +184,7 @@ Student -- ClientPromise
 #+end_src
 
 #+RESULTS:
+[[file:img/uml-classes.png]]
 
 #+caption: Class UML
 #+attr_org: :width 700
