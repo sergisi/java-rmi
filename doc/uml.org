@@ -1,28 +1,22 @@
 #+TITLE: UML
 #+author: quimpm, iancalvo, sergisi
 
-* Workflow
-1. Professor starts aplication with inputs:
-   + Input file to be read.
-   + Output file to be written.
-2. Server processes input file and create:
-   + Questions
-   + SessionMaker, which is also registered at
-     RMI
-3. Students register with an ID and a Connection
-   object.
-4. Session Maker saves and creates an UserSession.
-5. When professor starts the exam:
-   + SessionMaker does not accept new connections.
-   + Starts 6
-     
-6. The student gets a new question.
-7. The student answers the question.
-8. Professor terminates the exam or student finishes the
-   exam.
-9. Student gets the final score
+* Introduction
 
-* UML Flow diagram
+* UML Sequence diagram
+
++ Explicar els diferents actors i sistemes de la seqüència.
+  - Student :: Actor 
+  - Client :: Sistema de connexió amb el client.
+  - Server :: Sistema de connexió amb el Professor
+  - Professor :: Actor
++ 2 formes correctes d'acabar
+  - Student acaba l'examen
+  - Professor acaba l'examen
+  Hem triat la segona perquè es pot veure que
+  les dos uniques comunicacions que s'han de començar
+  desde el servidor cap al client.
++ Es pot veure la estructura d'iterador de les preguntes.
 
 #+begin_src plantuml :file img/uml-flow.png :dir .
 !define BASEPATH .
@@ -63,10 +57,47 @@ Student <-- Client: Finished exam with score x/y
 Professor <-- Server: Scores for the exam.
 #+end_src
 
-#+RESULTS:
+#+attr_org: :width 700
+#+caption: UML Sequence diagram
 [[file:img/uml-flow.png]]
 
 * UML Classes diagram
+Introduction
+
+** Interficies
++ SessionMaker :: Serves as point of connection from the Server. The
+  client can use it to make a new Session, providing the id and a class
+  that will be used to tell the client when to start or to finish the
+  exam. It is also the point of connection to get and answer the questions.
+  This interaction is designed to be used as an ~Iterator~.
++ ClientPromise :: Acts as an asyncrous way to tell the Client when to
+  start or finish the exam from the server.
+
+** Classes
++ Professor :: Runnable
+  - Runnable
+  - S'introdueix ~inputfile~ com a arg 0.
+  - S'intordueix ~outputfile~ com a arg 1.
++ Student :: Runnable
++ Question :: 
+  - Final
+  - ~parseLine~ per evitar problemes als textos. Es pot veure com un
+    Builder.
++ UserSession ::
+  - És final: perque es final
+    + Compilador acabarà fent la mutabilitat ell
+    + La mutabiltat passa a ser explícita, que en sistemes
+      concurrents i / o distribuïts facilita la programació.
+  
++ SessionMakerImpl :: 
+  - startExam
+  - finishExam
+  - Resolem les interaccions entre question, usersession i SessionMaker
+    com a ArrayList, hashmap...
+
++ ClientPromiseImpl :: Implementació del client. ~finishExam~ finalitzarà
+  l'executable.
+
 
 #+BEGIN_SRC plantuml :file img/uml-classes.png :dir .
 'General Defaults
@@ -86,11 +117,11 @@ class SessionMakerImpl {
     - users: HashMap<IdStudent, UserSession>
     - client: HashMap<IdStudent, ClientPromise>
     ~ finishExam(): void
+    ~ startExam(): void
 }
 
 class Question {
     - question: String
-    - choices: ArrayList<String>
     - correctAnswer: Integer
     + isCorrectAnswer(choice: Integer): Bool
     + getQuestion(): String
@@ -138,27 +169,8 @@ Student -- ClientPromise
 
 #+RESULTS:
 
+#+caption: Class UML
 #+attr_org: :width 700
 [[file:img/uml-classes.png]]
-
-#+caption: Class UML
-[[file:uml-classes.png]]
-   
-#+begin_src 
-class Student {
-    + static main(String[] args) {
-        id <- readLn
-        client <- ClientPromise
-        sessionMaker.newSession(id, client)
-        while sessionMaker.hasNext(id):
-            question <- sessionMaker.next(id)
-            printLn $ question
-            answer <- readLn
-            sessionMaker.answerQuestion(id, answer)
-    }
-}
-
-
-#+end_src    
 
 
