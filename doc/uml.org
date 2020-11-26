@@ -1,21 +1,23 @@
 #+TITLE: UML
-#+author: quimpm, iancalvo, sergisi
-
-* Introduction
+#+author: quimpm, horno, sergisi
 
 * UML Sequence diagram
 
-  - Student :: Actor is the actor that will be interacting with the client.
-  - Client :: It's the system of connection to the Student.
-  - Server :: Sistema de connexió amb el Professor
-  - Professor :: Actor
-+ 2 formes correctes d'acabar
-  - Student acaba l'examen
-  - Professor acaba l'examen
-  Hem triat la segona perquè es pot veure que
-  les dos uniques comunicacions que s'han de començar
-  desde el servidor cap al client.
-+ Es pot veure la estructura d'iterador de les preguntes.
++ Elements
+  - Student :: Actor that will be interacting with the client.
+  - Client :: System of connection to the Student.
+  - Server :: System of connection to the Professor.
+  - Professor :: Actor that will be interacting with the server.
++ In the workflow of an exam there are two ways to finnish:
+  - The student answers all questions and finnishes the exam
+  - The student didn't answer all the questions and the professor finnishes the exam
+  We chosed the seccond one as we can see both communication to be made from the server
+  to the client. Moreover, in this diagram also we can see all the things from the first
+  workflow.
+
++ Even though the workflow is well seen in the UML sequence, one thing that we would 
+  like to point out is that we do the loop with the use of an iterator. 
+
 
 #+begin_src plantuml :file img/uml-flow.png :dir .
 !define BASEPATH .
