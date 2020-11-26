@@ -84,13 +84,14 @@ Introduction
   start or finish the exam from the server.
 
 ** Classes
-+ Professor :: Runnable
-  It will be a runnable that will take as its first parameter the input file containing
-  the questions and answers of the exam. The second parameter will be the path to the output
-  file where the results will be stored. It's the part that will start the server side.
-+ Student :: Runnable
-
-  Much like Professor, it will be the part that will start the client side. In this case it 
++ Professor :: It will be a runnable that will take as its first parameter
+  the input file containing
+  the questions and answers of the exam. The second parameter will be the
+  path to the output
+  file where the results will be stored. It's the part that will start the
+  server side.
++ Student ::  Much like Professor, it will be the part that will start the
+  client side. In this case it 
   has no parameters, and it is also a runnable.
 + Question :: Question stores in the server the formated question
   as a multiline string that has the following formatting:
@@ -121,8 +122,9 @@ Question?
   - ~UserSession~ :: It will be stored in a ~HashMap<IdStudent, UserSession>~
   - ~ClientPromise~ :: It will be stored in a ~HashMap<IdStudent, ClientPromise>~
 
-+ ClientPromiseImpl :: Implementació del client. ~finishExam~ finalitzarà
-  l'executable.
++ ClientPromiseImpl :: It provides an implementation of the Remote interface
+  ~ClientPromise~. ~finishExam~ method will end the execution of the main
+  thread once it has shown the score to the student.
 
 
 #+BEGIN_SRC plantuml :file img/uml-classes.png :dir .
