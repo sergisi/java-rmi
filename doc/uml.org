@@ -1,5 +1,9 @@
 #+TITLE: UML
-#+author: quimpm, horno, sergisi
+#+author: Joaquim Picó Mora, Ian Palacín Aliana, Sergi Simón Balcells
+
+* GitHub
+[[https://github.com/sergisi/java-rmi][Link to github.]] In ~doc/img/~ you will find the images of the diagrams
+if you have trouble to see the diagram in the PDF.
 
 * UML Sequence diagram
 
@@ -72,8 +76,6 @@ deactivate RMIRegistry
 [[file:img/uml-flow.png]]
 
 * UML Classes diagram
-Introduction
-
 ** Interficies
 + SessionMaker :: Serves as point of connection from the Server. The
   client can use it to make a new Session, providing the id and a class

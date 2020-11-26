@@ -86,7 +86,7 @@ return """ Question
       ~True~, and ~nextQuestion~ if ~isCorrectAnswer~ is ~False~.
 + [ ] Test ~hasNext~
   - [ ] Test that it calls
-    + [ ] ~UserSession.getActualSession~ is called
+    + [ ] ~UserSession.getActualAnswer~ is called
   - [ ] Returns that the ~actualQuestion~ is smaller than ~question~
 + [ ] Test ~next~
   - [ ] Returns a ~Question~
@@ -94,6 +94,8 @@ return """ Question
 + [ ] Test ~finishExam~.
   - [ ] Test that calls all finishExam that are in the map, even if some fail
     with a remote exception.
++ [ ] Test ~startExam~.
+  It call all ~ClientPromise.startExam~.
 
 **** TODO Implement SessionMakerImpl
 + [ ] ~answerQuestion~
