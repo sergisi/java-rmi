@@ -88,10 +88,20 @@ Introduction
   - S'introdueix ~inputfile~ com a arg 0.
   - S'intordueix ~outputfile~ com a arg 1.
 + Student :: Runnable
-+ Question :: 
-  - Final
-  - ~parseLine~ per evitar problemes als textos. Es pot veure com un
-    Builder.
++ Question :: Question stores in the server the formated question
+  as a multiline string that has the following formatting:
+  #+begin_src text
+Question?
+- [0] Choice 0
+- [1] Choice 1
+- [2] Choice 2
+  [...]
+  #+end_src
+  It will also contain which choice is the correct one.
+
+  Finally, this class will contain a static method to parse the line
+  from the format file to the one stored in the server. It can be
+  seen as a static ~Builder~.
 + UserSession ::
   - És final: perque es final
     + Compilador acabarà fent la mutabilitat ell
