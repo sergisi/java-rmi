@@ -5,9 +5,8 @@
 
 * UML Sequence diagram
 
-+ Explicar els diferents actors i sistemes de la seqüència.
-  - Student :: Actor 
-  - Client :: Sistema de connexió amb el client.
+  - Student :: Actor is the actor that will be interacting with the client.
+  - Client :: It's the system of connection to the Student.
   - Server :: Sistema de connexió amb el Professor
   - Professor :: Actor
 + 2 formes correctes d'acabar
