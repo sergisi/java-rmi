@@ -110,6 +110,7 @@ class Professor {
 
 interface ClientPromise {
     + finishExam(correctAnswer: Integer, totalQuestions: Integer): void
+    + startExam(): void
 }
 
 class ClientPromiseImpl {
@@ -134,6 +135,8 @@ Student -- SessionMaker
 
 Student -- ClientPromise
 #+end_src
+
+#+RESULTS:
 
 #+attr_org: :width 700
 [[file:img/uml-classes.png]]
