@@ -88,12 +88,24 @@ Introduction
   the questions and answers of the exam. The second parameter will be the path to the output
   file where the results will be stored. It's the part that will start the server side.
 + Student :: Runnable
+
   Much like Professor, it will be the part that will start the client side. In this case it 
   has no parameters, and it is also a runnable.
-+ Question :: (Xavalín)
-  - Final
-  - ~parseLine~ per evitar problemes als textos. Es pot veure com un
-    Builder.
++ Question :: Question stores in the server the formated question
+  as a multiline string that has the following formatting:
+  #+begin_src text
+Question?
+- [0] Choice 0
+- [1] Choice 1
+- [2] Choice 2
+  [...]
+  #+end_src
+  It will also contain which choice is the correct one.
+
+  Finally, this class will contain a static method to parse the line
+  from the format file to the one stored in the server. It can be
+  seen as a static ~Builder~.
+
 + UserSession ::
   This class is the one that will store the state of the client session.
   We decide it to make it final, becouse the compiler will notice at the lower
