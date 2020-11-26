@@ -114,8 +114,9 @@ Question?
   - Resolem les interaccions entre question, usersession i SessionMaker
     com a ArrayList, hashmap...
 
-+ ClientPromiseImpl :: Implementació del client. ~finishExam~ finalitzarà
-  l'executable.
++ ClientPromiseImpl :: It provides an implementation of the Remote interface
+  ~ClientPromise~. ~finishExam~ method will end the execution of the main
+  thread once it has shown the score to the student.
 
 
 #+BEGIN_SRC plantuml :file img/uml-classes.png :dir .
