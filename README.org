@@ -22,11 +22,11 @@ In this project bla bla bla
 ** Usage
 
 ** Roadmap
-*** PROJ Define Common
+*** DONE Define Common
 Define the interfaces which the Server and the Client will rely on the
 communication.
-**** TODO Define ClientPromise
-**** TODO Define SessionMaker
+**** DONE Define ClientPromise
+**** DONE Define SessionMaker
 
 *** PROJ Make the Server
 Implement the Server that the professor will execute.
