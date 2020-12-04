@@ -120,9 +120,11 @@ main = do
 
 *** TODO Make Client
 **** TODO Make Client Promise Test
-+ [ ] ~finishExam~ calls:
-  - [ ] ~System.println~ with the string with the score.
-  - [ ] ~System.exit~ to exit the client
++ [X] ~finishExam~ calls:
+  - [X] ~System.println~ with the string with the score.
+  - [X] ~System.exit~ to exit the client
++ [ ] ~startExam~ calls:
+    
 **** TODO Make Client Promise
 **** TODO Make Student executable
 Test the calls of this pseudocode:
