@@ -5,10 +5,10 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.IntStream;
 
-public final class Question {
+public class Question {
 
-    private String question;
-    private Integer correctAnswer;
+    private final String question;
+    private final Integer correctAnswer;
 
     public Question(String question, Integer correctAnswer) {
         this.question = question;
