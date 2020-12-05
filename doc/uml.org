@@ -75,6 +75,41 @@ deactivate RMIRegistry
 #+caption: UML Sequence diagram
 [[file:img/uml-flow.png]]
 
+* UML Student main test
+#+begin_src plantuml :file img/uml-main-test.png :dir .
+!define BASEPATH .
+!include BASEPATH/global/stylesheet.puml
+actor Student order 0
+participant Client order 10
+participant RMIRegistry order 15
+
+Client -> RMIRegistry : lookup("SessionMaker")
+RMIRegistry --> Client : SessionMakerMock
+Client --> Student : println("Put your id for this session")
+Student --> Cleint : readLn() = "1234" 
+Client --> Client : ClientPromiseImpl.isStartExam() = false
+Client --> Client : ClientPromiseImpl.isStartExam() = true
+Client --> Client : session.hasNext() = true
+Client --> Client : clientPromise.isFinishExam() = false
+Client --> Client : session.next() = "Question"
+Client --> Student : printLn("Question")
+Student --> Client : readLn() = "1"
+Client --> Client: session.answerQuestion(1)
+Client --> Client : session.hasNext() = true
+Client --> Client : clientPromise.isFinishExam() = false
+Client --> Client : session.next() = "Question2"
+Client --> Student : printLn("Question2")
+Student --> Client : readLn() = "2"
+Client --> Client: session.answerQuestion(2)
+Client --> Client : session.hasNext() = true
+Client --> Client : clientPromise.isFinishExam() = true
+Client --> Student : printLn("The exam has finished, you have a score of 1/3")
+#+end_src
+
+#+attr_org: :width 500
+#+RESULTS:
+[[file:img/uml-main-test.png]]
+
 * UML Classes diagram
 ** Interficies
 + SessionMaker :: Serves as point of connection from the Server. The
