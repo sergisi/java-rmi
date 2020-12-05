@@ -2,7 +2,7 @@ package adaptators;
 
 import java.util.Scanner;
 
-public class AdaptateSystem {
+public class AdaptSystem {
 
     public void println(String line) {
         System.out.println(line);

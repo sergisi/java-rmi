@@ -1,6 +1,6 @@
 package main;
 
-import adaptators.AdaptateSystem;
+import adaptators.AdaptSystem;
 import common.SessionMaker;
 
 import java.rmi.NotBoundException;
@@ -10,7 +10,7 @@ import java.rmi.registry.Registry;
 
 public class Client {
 
-    private static AdaptateSystem system = new AdaptateSystem();
+    private static AdaptSystem system = new AdaptSystem();
     private static Registry registry;
     private static ClientPromiseImpl clientPromise = new ClientPromiseImpl();
 
@@ -63,11 +63,10 @@ public class Client {
         if (registry == null) {
             registry = LocateRegistry.getRegistry();
         }
-        SessionMaker sessionMaker = (SessionMaker) registry.lookup("SessionMaker");
-        return sessionMaker;
+        return (SessionMaker) registry.lookup("SessionMaker");
     }
 
-    public static void setSystem(AdaptateSystem sys) {
+    public static void setSystem(AdaptSystem sys) {
         system = sys;
     }
 

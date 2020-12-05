@@ -1,6 +1,6 @@
 package main;
 
-import adaptators.AdaptateSystem;
+import adaptators.AdaptSystem;
 import common.SessionMaker;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -14,14 +14,14 @@ import static org.mockito.Mockito.*;
 
 class ClientTest {
 
-    private AdaptateSystem sysMock;
+    private AdaptSystem sysMock;
     private Registry regMock;
     private SessionMaker sessionMock;
     private ClientPromiseImpl clientMock;
 
     @BeforeEach
     void setUp() throws RemoteException, NotBoundException {
-        sysMock = mock(AdaptateSystem.class);
+        sysMock = mock(AdaptSystem.class);
         Client.setSystem(sysMock);
         regMock = mock(Registry.class);
         Client.setRegistry(regMock);
@@ -66,7 +66,7 @@ class ClientTest {
     @AfterEach
     void tearUp() {
         Client.setRegistry(null);
-        Client.setSystem(new AdaptateSystem());
+        Client.setSystem(new AdaptSystem());
         Client.setClientPromise(new ClientPromiseImpl());
     }
 }

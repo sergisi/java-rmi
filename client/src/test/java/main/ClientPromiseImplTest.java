@@ -1,6 +1,6 @@
 package main;
 
-import adaptators.AdaptateSystem;
+import adaptators.AdaptSystem;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -12,12 +12,12 @@ import static org.mockito.Mockito.*;
 
 class ClientPromiseImplTest {
     private ClientPromiseImpl client;
-    private AdaptateSystem systemMock;
+    private AdaptSystem systemMock;
 
 
     @BeforeEach
     void setUp() {
-        systemMock = mock(AdaptateSystem.class);
+        systemMock = mock(AdaptSystem.class);
         client = new ClientPromiseImpl();
     }
 
