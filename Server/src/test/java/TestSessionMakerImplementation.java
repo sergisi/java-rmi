@@ -45,7 +45,7 @@ public class TestSessionMakerImplementation {
         assertTrue(clients.containsKey(idStudent) && users.containsKey(idStudent));
         String idStudent2 = "hola2";
         ClientPromise client2 = mock(ClientPromise.class);
-        newSession.newSession(idStudent,client);
+        newSession.newSession(idStudent2,client2);
         clients = newSession.getClients();
         users = newSession.getUsers();
         assertTrue(clients.containsKey(idStudent2) && users.containsKey(idStudent2));
