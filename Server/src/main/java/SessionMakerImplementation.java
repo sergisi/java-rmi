@@ -7,10 +7,10 @@ import java.util.Set;
 
 public class SessionMakerImplementation implements SessionMaker {
 
-    ArrayList<Question> questions;
-    HashMap<String, UserSession> users;
-    HashMap<String, ClientPromise> clients;
-    boolean examStarted;
+    private ArrayList<Question> questions;
+    private HashMap<String, UserSession> users;
+    private HashMap<String, ClientPromise> clients;
+    private boolean examStarted;
 
     public SessionMakerImplementation(ArrayList<Question> questions){
         this.questions = questions;
@@ -82,4 +82,11 @@ public class SessionMakerImplementation implements SessionMaker {
         }
     }
 
+    public HashMap<String, ClientPromise> getClients() {
+        return clients;
+    }
+
+    public HashMap<String, UserSession> getUsers() {
+        return users;
+    }
 }
