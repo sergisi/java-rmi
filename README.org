@@ -30,11 +30,11 @@ communication.
 
 *** PROJ Make the Server
 Implement the Server that the professor will execute.
-**** TODO Make tests for Question
-+ [ ] Make test for isCorrectAnswer
-  - [ ] If the integer is the correct answer, then return True
-  - [ ] Else return False
-+ [ ] Make getQuestion
+**** DONE Make tests for Question
++ [X] Make test for isCorrectAnswer
+  - [X] If the integer is the correct answer, then return True
+  - [X] Else return False
++ [X] Make getQuestion
   Returns a multiline string as:
     #+begin_src python
 return """ Question
@@ -44,31 +44,31 @@ return """ Question
            [ ... ]
 """
     #+end_src
-+ [ ] Make static parseLine
-  - [ ] Test for a correct string with 3 choice
-  - [ ] Test a correct string with 4 choices
-  - [ ] Test an incorrect string with 1 choice
-  - [ ] Test an unparsable string
-  - [ ] Test an incorrect string with "Question;Correct choice"
++ [X] Make static parseLine
+  - [X] Test for a correct string with 3 choice
+  - [X] Test a correct string with 4 choices
+  - [X] Test an incorrect string with 1 choice
+  - [X] Test an unparsable string
+  - [X] Test an incorrect string with "Question;Correct choice"
 
-**** TODO Make Question
-+ [ ] Make question final
-+ [ ] Make the fields
-+ [ ] Make the methods
-+ [ ] Make the static function parseLine, that given a question
+**** DONE Make Question
++ [X] Make question final
++ [X] Make the fields
++ [X] Make the methods
++ [X] Make the static function parseLine, that given a question
   line parses a String
   
-**** TODO Make tests for UserSession
-+ [ ] Test Creation of UserSession: integers are 0 and 0,
+**** DONE Make tests for UserSession
++ [X] Test Creation of UserSession: integers are 0 and 0,
   and different creations the UserSession are equal.
-+ [ ] Test nextQuestionCorrect: both integers are summed 1 and 1.
-+ [ ] Test nextQuestion: only the actual question is incremented.
++ [X] Test nextQuestionCorrect: both integers are summed 1 and 1.
++ [X] Test nextQuestion: only the actual question is incremented.
   
-**** TODO Make UserSession
-+ [ ] Make the UserSession final: this will let the compiler make
+**** DONE Make UserSession
++ [X] Make the UserSession final: this will let the compiler make
   the necessary optimizations.
-+ [ ] Make the fields
-+ [ ] Make the methods
++ [X] Make the fields
++ [X] Make the methods
   
 **** TODO Make tests for SessionMakerImpl
 + [ ] Test newSession:
@@ -120,10 +120,15 @@ main = do
 
 *** TODO Make Client
 **** TODO Make Client Promise Test
-+ [ ] ~finishExam~ calls:
-  - [ ] ~System.println~ with the string with the score.
-  - [ ] ~System.exit~ to exit the client
++ [X] ~finishExam~ calls:
+  - [X] ~System.println~ with the string with the score.
+  - [X] ~System.exit~ to exit the client
++ [ ] ~startExam~ calls:
+    
 **** TODO Make Client Promise
++ [X] make ~finishExam~
++ [ ] make ~startExam~
+  
 **** TODO Make Student executable
 Test the calls of this pseudocode:
 #+begin_src 
