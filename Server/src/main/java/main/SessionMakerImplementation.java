@@ -49,23 +49,15 @@ public class SessionMakerImplementation implements SessionMaker {
     @Override
     public boolean hasNext(String idStudent) {
         UserSession currentSession = users.get(idStudent);
-        Integer currentAnswer = currentSession.actualQuestion;
-        try {
-            Question nextQuestion = questions.get(currentAnswer + 1);
-        } catch (Exception e) {
-            return false;
-        }
-        return true;
+        Integer questionId = currentSession.actualQuestion;
+        return questionId < this.questions.size();
     }
 
     @Override
     public String next(String idStudent) {
         UserSession currentSession = users.get(idStudent);
         Integer currentQuestion = currentSession.actualQuestion;
-        synchronized (users) {
-            users.put(idStudent, new UserSession(currentSession.actualQuestion + 1, currentSession.correctAnswers));
-        }
-        return questions.get(currentQuestion + 1).getQuestion();
+        return questions.get(currentQuestion).getQuestion();
     }
 
     protected void finishExam() {

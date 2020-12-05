@@ -25,27 +25,24 @@ public class Question {
 
     //main.Question?;choice1;choice2;choice3;...;correct_answer_number.
     public static Question parseLine(String question) throws BadQuestionExceptions {
-        String [] splitedQuestion = question.split(";");
-        if(splitedQuestion.length < 4){
+        String [] splitQuestion = question.split(";");
+        if(splitQuestion.length < 4){
             throw new BadQuestionExceptions("Not a valid main.Question");
         }
-        String questionStatement = splitedQuestion[0];
-        Integer correct_answer = Integer.parseInt(splitedQuestion[splitedQuestion.length-1]);
-        String[] answers = IntStream.range(1, splitedQuestion.length)
-                .mapToObj(i -> splitedQuestion[i])
+        String questionStatement = splitQuestion[0];
+        Integer correct_answer = Integer.parseInt(splitQuestion[splitQuestion.length-1]);
+        String[] answers = java.util.Arrays.stream(splitQuestion, 1, splitQuestion.length)
                 .toArray(String[]::new);
         String parsedQuestion = parseQuestion(questionStatement, answers);
         return new Question(parsedQuestion, correct_answer);
     }
 
     private static String parseQuestion(String questionStatement, String[] answers){
-        String parsedQuestion = questionStatement+"\n";
-        for (Integer i = 0; i < answers.length; i++) {
-            i++;
-            parsedQuestion += "- ["+ i.toString() + "]: "+ answers[i]+"\n";
-            i--;
+        StringBuilder parsedQuestion = new StringBuilder(questionStatement + "\n");
+        for (int i = 1; i <= answers.length; i++) {
+            parsedQuestion.append("- [").append(Integer.toString(i)).append("]: ").append(answers[i]).append("\n");
         }
-        return parsedQuestion;
+        return parsedQuestion.toString();
     }
 
     @Override
