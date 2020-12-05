@@ -71,12 +71,11 @@ return """ Question
 + [X] Make the methods
   
 **** TODO Make tests for SessionMakerImpl
-+ [ ] Test newSession:
-  - [ ] Adds an entry to users, with the passes Id and a new UserSession.
-  - [ ] Test that this behavior with more than one user.
-  - [ ] Test that a student that tries to create a session for the second
-    time does not break anything.
-  - [ ] Adds an entry to the client map.
++ [X] Test newSession:
+  - [X] Adds an entry to users, with the passes Id and a new UserSession.
+  - [X] Test that this behavior with more than one user.
+  - [X] Test that a student that tries to create a session for the second time does not break anything.
+  - [X] Adds an entry to the client map.
     
 + [ ] Test answerQuestion
   - [ ] test that an answer calls:
@@ -94,12 +93,11 @@ return """ Question
 + [ ] Test ~finishExam~.
   - [ ] Test that calls all finishExam that are in the map, even if some fail
     with a remote exception.
-+ [ ] Test ~startExam~.
-  It call all ~ClientPromise.startExam~.
++ [ ] Test ~startExam~: It calls all ~ClientPromise.startExam~.
 
 **** TODO Implement SessionMakerImpl
 + [ ] ~answerQuestion~
-+ [ ] ~newSession~
++ [X] ~newSession~
 + [ ] ~hasNext~
 + [ ] ~next~
 + [ ] ~finishExam~
@@ -118,18 +116,22 @@ main = do
   #+end_src
 **** TODO Implement Professor
 
-*** TODO Make Client
-**** TODO Make Client Promise Test
-+ [X] ~finishExam~ calls:
-  - [X] ~System.println~ with the string with the score.
-  - [X] ~System.exit~ to exit the client
-+ [ ] ~startExam~ calls:
+*** DONE Make Client
+**** DONE Make Client Promise Test
++ [X] ~finishExam~ sets:
+  - [X] correctAnswers
+  - [X] totalQuestions
+  - [X] finishExam = true
++ [X] ~startExam~ calls:
+  + [X] ~notifyAll~
+  + [X] sets ~startExam~ to ~true~
     
-**** TODO Make Client Promise
+    
+**** DONE Make Client Promise
 + [X] make ~finishExam~
-+ [ ] make ~startExam~
++ [X] make ~startExam~
   
-**** TODO Make Student executable
+**** DONE Make Student executable
 Test the calls of this pseudocode:
 #+begin_src 
 main = do
