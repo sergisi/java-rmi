@@ -86,7 +86,7 @@ participant RMIRegistry order 15
 Client -> RMIRegistry : lookup("SessionMaker")
 RMIRegistry --> Client : SessionMakerMock
 Client --> Student : println("Put your id for this session")
-Student --> Cleint : readLn() = "1234" 
+Student --> Client : readLn() = "1234" 
 Client --> Client : ClientPromiseImpl.isStartExam() = false
 Client --> Client : ClientPromiseImpl.isStartExam() = true
 Client --> Client : session.hasNext() = true
