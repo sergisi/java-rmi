@@ -1,35 +1,46 @@
 package main;
 
 import adaptators.AdaptateSystem;
-import common.ClientPromise;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.Mockito.*;
 
 class ClientPromiseImplTest {
-    private ClientPromise client;
+    private ClientPromiseImpl client;
     private AdaptateSystem systemMock;
 
 
     @BeforeEach
     void setUp() {
         systemMock = mock(AdaptateSystem.class);
-        client = new ClientPromiseImpl(systemMock);
+        client = new ClientPromiseImpl();
     }
 
     @Test
     void finishExam() throws IOException {
         client.finishExam(10, 15);
-        verify(systemMock).exit(0);
-        verify(systemMock).println("The exam has finished. Your score was 10/15");
+        assertTrue(client.isExamFinished());
+        assertEquals(client.getCorrectAnswers(), 10);
+        assertEquals(client.getTotalQuestions(), 15);
     }
 
     @Test
     void startExam() {
-
+        client = spy(ClientPromiseImpl.class);
+        client.startExam();
+        synchronized (client) {
+            // notifyAll cannot be tested, as it is implemented by Object
+            // so it is called notifyAll from object instead of the Spy.
+            // At the end, it explodes when running both tests.
+            // verify(client).notifyAll();
+        }
+        assertTrue(client.isStartExam());
     }
+
+
 }

@@ -1,28 +1,38 @@
 package main;
 
-import adaptators.AdaptateSystem;
 import common.ClientPromise;
 
 public class ClientPromiseImpl implements ClientPromise {
-    private final AdaptateSystem sys;
+    private boolean examFinished = false;
+    private boolean startExam = false;
+    private Integer correctAnswers, totalQuestions;
 
-    public ClientPromiseImpl() {
-        this(new AdaptateSystem());
-    }
-
-    public ClientPromiseImpl(AdaptateSystem sys) {
-        super();
-        this.sys = sys;
-
-    }
-
-
-    public void finishExam(Integer correctAnswer, Integer totalQuestions) {
-        sys.println("The exam has finished. Your score was " + correctAnswer.toString() + "/" + totalQuestions.toString());
-        sys.exit(0);
+    public void finishExam(Integer correctAnswers, Integer totalQuestions) {
+        this.examFinished = true;
+        this.correctAnswers = correctAnswers;
+        this.totalQuestions = totalQuestions;
     }
 
     public synchronized void startExam() {
+        startExam = true;
         this.notifyAll();
     }
+
+    public boolean isExamFinished() {
+        return examFinished;
+    }
+
+    public boolean isStartExam() {
+        return startExam;
+    }
+
+
+    public Integer getCorrectAnswers() {
+        return correctAnswers;
+    }
+
+    public Integer getTotalQuestions() {
+        return totalQuestions;
+    }
+
 }
