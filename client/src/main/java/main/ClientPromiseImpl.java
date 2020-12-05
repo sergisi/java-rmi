@@ -11,6 +11,7 @@ public class ClientPromiseImpl implements ClientPromise {
     }
 
     public ClientPromiseImpl(AdaptateSystem sys) {
+        super();
         this.sys = sys;
 
     }
@@ -21,7 +22,7 @@ public class ClientPromiseImpl implements ClientPromise {
         sys.exit(0);
     }
 
-    public void startExam() {
-
+    public synchronized void startExam() {
+        this.notifyAll();
     }
 }

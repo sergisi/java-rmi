@@ -1,5 +1,7 @@
 package adaptators;
 
+import java.util.Scanner;
+
 public class AdaptateSystem {
 
     public void println(String line) {
@@ -8,5 +10,9 @@ public class AdaptateSystem {
 
     public void exit(int statusCode) {
         System.exit(statusCode);
+    }
+
+    public String readLn() {
+        return new Scanner(System.in).nextLine();
     }
 }
