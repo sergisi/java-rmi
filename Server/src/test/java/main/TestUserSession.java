@@ -1,3 +1,6 @@
+package main;
+
+import main.UserSession;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -7,7 +10,7 @@ public class TestUserSession {
     void testCreationIsZero(){
         UserSession userSession = new UserSession();
         assertEquals(userSession.actualQuestion,0);
-        assertEquals(userSession.correctAnswer,0);
+        assertEquals(userSession.correctAnswers,0);
     }
 
     @Test

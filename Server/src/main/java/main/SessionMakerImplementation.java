@@ -1,5 +1,8 @@
+package main;
+
 import Common.ClientPromise;
 import Common.SessionMaker;
+import main.Question;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -7,9 +10,9 @@ import java.util.Set;
 
 public class SessionMakerImplementation implements SessionMaker {
 
-    private ArrayList<Question> questions;
-    private HashMap<String, UserSession> users;
-    private HashMap<String, ClientPromise> clients;
+    private final ArrayList<Question> questions;
+    private final HashMap<String, UserSession> users;
+    private final HashMap<String, ClientPromise> clients;
     private boolean examStarted;
 
     public SessionMakerImplementation(ArrayList<Question> questions){
@@ -67,9 +70,8 @@ public class SessionMakerImplementation implements SessionMaker {
 
     protected void finishExam() {
         Set<String> idStudents = clients.keySet();
-        Integer correctAnswers = 0;
         for (String idStudent : idStudents) {
-            correctAnswers = users.get(idStudent).correctAnswers;
+            Integer correctAnswers = users.get(idStudent).correctAnswers;
             clients.get(idStudent).finishExam(correctAnswers, questions.size());
         }
     }

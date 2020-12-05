@@ -1,7 +1,7 @@
+package main;
 
 import Exceptions.BadQuestionExceptions;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
+import main.Question;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
