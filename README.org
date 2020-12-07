@@ -77,30 +77,31 @@ return """ Question
   - [X] Test that a student that tries to create a session for the second time does not break anything.
   - [X] Adds an entry to the client map.
     
-+ [ ] Test answerQuestion
-  - [ ] test that an answer calls:
-    + [ ] The corresponding ~Question~ with ~isCorrectAnswer~. Make an interface to test
++ [X] Test answerQuestion
+  - [X] test that an answer calls:
+    + [X] The corresponding ~Question~ with ~isCorrectAnswer~. Make an interface to test
       this.
-    + [ ] The corresponding ~UserSession~ calls ~nextQuestionCorrect~ if ~isCorrectAnswer~ is
+    + [X] The corresponding ~UserSession~ calls ~nextQuestionCorrect~ if ~isCorrectAnswer~ is
       ~True~, and ~nextQuestion~ if ~isCorrectAnswer~ is ~False~.
 + [ ] Test ~hasNext~
-  - [ ] Test that it calls
-    + [ ] ~UserSession.getActualAnswer~ is called
-  - [ ] Returns that the ~actualQuestion~ is smaller than ~question~
+  - [X] Test that it calls
+    + [X] ~UserSession.getActualAnswer~ is called
+  - [] Returns that the ~actualQuestion~ is smaller than ~question~
 + [ ] Test ~next~
-  - [ ] Returns a ~Question~
+  - [X] Returns a ~Question~
   - [ ] Throws an error if the ~Question~ does not exist
-+ [ ] Test ~finishExam~.
-  - [ ] Test that calls all finishExam that are in the map, even if some fail
++ [X] Test ~finishExam~.
+  - [X] Test that calls all finishExam that are in the map, even if some fail
     with a remote exception.
-+ [ ] Test ~startExam~: It calls all ~ClientPromise.startExam~.
++ [X] Test ~startExam~: It calls all ~ClientPromise.startExam~.
 
 **** TODO Implement SessionMakerImpl
-+ [ ] ~answerQuestion~
++ [X] ~answerQuestion~
 + [X] ~newSession~
-+ [ ] ~hasNext~
-+ [ ] ~next~
-+ [ ] ~finishExam~
++ [X] ~hasNext~
++ [X] ~next~
++ [X] ~finishExam~
++ [X] ~startExam~
 
 
 **** TODO Test Professor
