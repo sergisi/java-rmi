@@ -37,7 +37,7 @@ public class SessionMakerImplementation implements SessionMaker {
     @Override
     public void answerQuestion(String idStudent, Integer answer) {
         UserSession actualUserSession = users.get(idStudent);
-        Integer actualQuestion = actualUserSession.actualQuestion;
+        Integer actualQuestion = actualUserSession.getActualQuestion();
         Question question = questions.get(actualQuestion);
         if (question.isCorrectAnswer(answer)){
             synchronized (users) {
@@ -53,7 +53,7 @@ public class SessionMakerImplementation implements SessionMaker {
     @Override
     public boolean hasNext(String idStudent) {
         UserSession currentSession = users.get(idStudent);
-        Integer currentAnswer = currentSession.actualQuestion;
+        Integer currentAnswer = currentSession.getActualQuestion();
         try{
             Question nextQuestion = questions.get(currentAnswer);
         }catch (Exception e){
@@ -65,14 +65,14 @@ public class SessionMakerImplementation implements SessionMaker {
     @Override
     public String next(String idStudent) {
         UserSession currentSession = users.get(idStudent);
-        Integer currentQuestion = currentSession.actualQuestion;
+        Integer currentQuestion = currentSession.getActualQuestion();
         return questions.get(currentQuestion).getQuestion();
     }
 
     protected void finishExam() {
         Set<String> idStudents = clients.keySet();
         for (String idStudent : idStudents) {
-            Integer correctAnswers = users.get(idStudent).correctAnswers;
+            Integer correctAnswers = users.get(idStudent).getActualQuestion();
             clients.get(idStudent).finishExam(correctAnswers, questions.size());
         }
     }

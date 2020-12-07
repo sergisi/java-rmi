@@ -3,8 +3,8 @@ package main;
 import java.util.Objects;
 
 public class UserSession {
-    public final Integer correctAnswers;
-    public final Integer actualQuestion;
+    private final Integer correctAnswers;
+    private final Integer actualQuestion;
 
     public UserSession(Integer correctAnswers, Integer actualQuestion) {
         this.correctAnswers = correctAnswers;
@@ -34,5 +34,13 @@ public class UserSession {
     @Override
     public int hashCode() {
         return Objects.hash(correctAnswers, actualQuestion);
+    }
+
+    public Integer getActualQuestion() {
+        return actualQuestion;
+    }
+
+    public Integer getCorrectAnswers() {
+        return correctAnswers;
     }
 }

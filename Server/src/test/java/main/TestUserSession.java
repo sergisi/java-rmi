@@ -9,8 +9,8 @@ public class TestUserSession {
     @Test
     void testCreationIsZero(){
         UserSession userSession = new UserSession();
-        assertEquals(userSession.actualQuestion,0);
-        assertEquals(userSession.correctAnswers,0);
+        assertEquals(userSession.getActualQuestion(),0);
+        assertEquals(userSession.getCorrectAnswers(),0);
     }
 
     @Test

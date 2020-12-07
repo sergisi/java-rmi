@@ -72,18 +72,18 @@ public class TestSessionMakerImplementation {
 
     @Test
     public void testAnswerQuestion(){
-        when(q1Mock.isCorrectAnswer(2)).thenReturn(true);
+        when(q1Mock.isCorrectAnswer(2)).thenReturn(false);
         String idStudent = "hola";
         ClientPromise clientMock = mock(ClientPromise.class);
         UserSession  userMock = mock(UserSession.class);
         when(userMock.nextQuestion()).thenReturn(new UserSession(0,1));
+        when(userMock.getActualQuestion()).thenReturn(0);
         newSession.newSession(idStudent,clientMock);
         newSession.setUserSession(idStudent,userMock);
         newSession.answerQuestion(idStudent,2);
         HashMap<String, UserSession> users = newSession.getUsers();
-        assertEquals(0,users.get(idStudent).correctAnswers);
-        assertEquals(1,users.get(idStudent).actualQuestion);
-        verify(userMock).nextQuestion();
+        assertEquals(0,users.get(idStudent).getCorrectAnswers());
+        assertEquals(1,users.get(idStudent).getActualQuestion());
     }
 
 
