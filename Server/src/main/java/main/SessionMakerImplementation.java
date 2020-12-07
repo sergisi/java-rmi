@@ -2,6 +2,7 @@ package main;
 
 import Common.ClientPromise;
 import Common.SessionMaker;
+import main.Question;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -14,7 +15,7 @@ public class SessionMakerImplementation implements SessionMaker {
     private final HashMap<String, ClientPromise> clients;
     private boolean examStarted;
 
-    public SessionMakerImplementation(ArrayList<Question> questions) {
+    public SessionMakerImplementation(ArrayList<Question> questions){
         this.questions = questions;
         this.users = new HashMap<>();
         this.clients = new HashMap<>();
@@ -23,7 +24,7 @@ public class SessionMakerImplementation implements SessionMaker {
 
     @Override
     public void newSession(String idStudent, ClientPromise client) {
-        if (!examStarted) {
+        if(!examStarted) {
             synchronized (users) {
                 users.put(idStudent, new UserSession());
             }
@@ -35,22 +36,30 @@ public class SessionMakerImplementation implements SessionMaker {
 
     @Override
     public void answerQuestion(String idStudent, Integer answer) {
-        UserSession userSession = users.get(idStudent);
-        Integer questionId = userSession.actualQuestion;
-        Question question = questions.get(questionId);
-        synchronized (users) {
-            users.put(idStudent,
-                    question.isCorrectAnswer(answer) ?
-                            userSession.nextQuestionCorrect()
-                            : userSession.nextQuestion());
+        UserSession actualUserSession = users.get(idStudent);
+        Integer actualQuestion = actualUserSession.actualQuestion;
+        Question question = questions.get(actualQuestion);
+        if (question.isCorrectAnswer(answer)){
+            synchronized (users) {
+                users.put(idStudent, actualUserSession.nextQuestionCorrect());
+            }
+        }else{
+            synchronized (users) {
+                users.put(idStudent, actualUserSession.nextQuestion());
+            }
         }
     }
 
     @Override
     public boolean hasNext(String idStudent) {
         UserSession currentSession = users.get(idStudent);
-        Integer questionId = currentSession.actualQuestion;
-        return questionId < this.questions.size();
+        Integer currentAnswer = currentSession.actualQuestion;
+        try{
+            Question nextQuestion = questions.get(currentAnswer);
+        }catch (Exception e){
+            return false;
+        }
+        return true;
     }
 
     @Override
@@ -68,7 +77,7 @@ public class SessionMakerImplementation implements SessionMaker {
         }
     }
 
-    protected void startExam() {
+    protected void startExam(){
         this.examStarted = true;
         Set<String> idStudents = clients.keySet();
         for (String idStudent : idStudents) {
@@ -83,4 +92,7 @@ public class SessionMakerImplementation implements SessionMaker {
     public HashMap<String, UserSession> getUsers() {
         return users;
     }
+
+    public void setUserSession(String idStudent, UserSession userState){ users.put(idStudent, userState); }
+
 }

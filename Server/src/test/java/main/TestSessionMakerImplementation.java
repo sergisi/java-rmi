@@ -8,9 +8,9 @@ import main.UserSession;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.*;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -18,14 +18,16 @@ import java.util.HashMap;
 public class TestSessionMakerImplementation {
 
     SessionMakerImplementation newSession;
+    Question q1Mock;
+    Question q2Mock;
 
     @BeforeEach
     public void setUp() throws BadQuestionExceptions {
-        Question q1 = mock(Question.class);
-        Question q2 = mock(Question.class);
+        q1Mock = mock(Question.class);
+        q2Mock = mock(Question.class);
         ArrayList<Question> questions = new ArrayList<>();
-        questions.add(q1);
-        questions.add(q2);
+        questions.add(q1Mock);
+        questions.add(q2Mock);
         newSession = new SessionMakerImplementation(questions);
     }
 
@@ -38,6 +40,8 @@ public class TestSessionMakerImplementation {
         HashMap<String, UserSession> users = newSession.getUsers();
         assertTrue(clients.containsKey(idStudent) && users.containsKey(idStudent));
     }
+
+
 
     @Test
     public void testNewSessionMultipleUsers(){
@@ -68,11 +72,20 @@ public class TestSessionMakerImplementation {
 
     @Test
     public void testAnswerQuestion(){
+        when(q1Mock.isCorrectAnswer(2)).thenReturn(true);
         String idStudent = "hola";
-        ClientPromise client = mock(ClientPromise.class);
-        newSession.newSession(idStudent,client);
-        newSession.answerQuestion(idStudent,3);
+        ClientPromise clientMock = mock(ClientPromise.class);
+        UserSession  userMock = mock(UserSession.class);
+        when(userMock.nextQuestion()).thenReturn(new UserSession(0,1));
+        newSession.newSession(idStudent,clientMock);
+        newSession.setUserSession(idStudent,userMock);
+        newSession.answerQuestion(idStudent,2);
+        HashMap<String, UserSession> users = newSession.getUsers();
+        assertEquals(0,users.get(idStudent).correctAnswers);
+        assertEquals(1,users.get(idStudent).actualQuestion);
+        verify(userMock).nextQuestion();
     }
+
 
     @Test
     public void hasNext(){
