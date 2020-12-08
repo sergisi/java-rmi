@@ -35,10 +35,10 @@ class ClientTest {
     void main() throws RemoteException, NotBoundException {
         whenInitilize();
         Client.main(new String[0]);
-        verify(sysMock).println("Put your id for this session");
-        verify(sysMock).println("Question");
-        verify(sysMock).println("Question2");
-        verify(sysMock).println("The exam has finished, you have a score of 1/3");
+        verify(sysMock).printLn("Put your id for this session");
+        verify(sysMock).printLn("Question");
+        verify(sysMock).printLn("Question2");
+        verify(sysMock).printLn("The exam has finished, you have a score of 1/3");
     }
 
     private void whenInitilize() {

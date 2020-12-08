@@ -35,7 +35,7 @@ public class Client {
     }
 
     private static void finishExam() {
-        system.println("The exam has finished, you have a score of "
+        system.printLn("The exam has finished, you have a score of "
                 + clientPromise.getCorrectAnswers() + "/" +
                 clientPromise.getTotalQuestions());
     }
@@ -48,13 +48,13 @@ public class Client {
 
     private static void answerQuestion(SessionMaker sessionMaker, String idStudent) throws ExamHasFinishedException {
         String question = sessionMaker.next(idStudent);
-        system.println(question);
+        system.printLn(question);
         Integer number = Integer.parseInt(system.readLn());
         sessionMaker.answerQuestion(idStudent, number);
     }
 
     private static String startExam(SessionMaker sessionMaker, ClientPromiseImpl clientPromise) throws InterruptedException {
-        system.println("Put your id for this session");
+        system.printLn("Put your id for this session");
         String idStudent = system.readLn();
         sessionMaker.newSession(idStudent, clientPromise);
         synchronized (clientPromise) {
