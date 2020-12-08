@@ -2,6 +2,7 @@ package main;
 
 import adaptators.AdaptSystem;
 import common.SessionMaker;
+import exceptions.ExamHasFinishedException;
 
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
@@ -25,6 +26,11 @@ public class Client {
                 finishExam();
             }
             e.printStackTrace();
+        } catch (ExamHasFinishedException e) {
+            // Is always true.
+            if (clientPromise.isExamFinished()) {
+                finishExam();
+            }
         }
     }
 
@@ -34,13 +40,13 @@ public class Client {
                 clientPromise.getTotalQuestions());
     }
 
-    private static void answerExam(SessionMaker sessionMaker, ClientPromiseImpl clientPromise, String idStudent) {
+    private static void answerExam(SessionMaker sessionMaker, ClientPromiseImpl clientPromise, String idStudent) throws ExamHasFinishedException {
         while (sessionMaker.hasNext(idStudent) && !clientPromise.isExamFinished()) {
             answerQuestion(sessionMaker, idStudent);
         }
     }
 
-    private static void answerQuestion(SessionMaker sessionMaker, String idStudent) {
+    private static void answerQuestion(SessionMaker sessionMaker, String idStudent) throws ExamHasFinishedException {
         String question = sessionMaker.next(idStudent);
         system.println(question);
         Integer number = Integer.parseInt(system.readLn());
