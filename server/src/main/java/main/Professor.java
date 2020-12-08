@@ -17,16 +17,16 @@ public class Professor {
     private static AdaptSystem sys = new AdaptSystem();
     private static AdaptParse parser = new AdaptParse();
     private static Registry registry;
-    private static Function<List<Question>, SessionMakerImplementation> sessionMaker = SessionMakerImplementation::new;
+    private static SessionMakerImplementation session;
 
     public static void main(String[] args) {
         if (args.length != 2) {
             sys.println("Please pass two arguments: <inputFile> <outputFile>");
             return;
         }
-        SessionMakerImplementation session = initializeSession(args[0]);
-
         try {
+            if (Professor.session == null)
+                session = initializeSession(args[0]);
             if (registry == null) {
                 registry = startRegistry();
             }
@@ -89,9 +89,9 @@ public class Professor {
     }
 
 
-    private static SessionMakerImplementation initializeSession(String inputFile) {
+    private static SessionMakerImplementation initializeSession(String inputFile) throws RemoteException {
         List<Question> questions = parser.parseQuestionsFile(inputFile);
-        return sessionMaker.apply(questions);
+        return new SessionMakerImplementation(questions);
     }
 
     public static void setSys(AdaptSystem sys) {
@@ -106,7 +106,7 @@ public class Professor {
         Professor.registry = registry;
     }
 
-    public static void setSessionMaker(Function<List<Question>, SessionMakerImplementation> sessionMaker) {
-        Professor.sessionMaker = sessionMaker;
+    public static void setSession(SessionMakerImplementation session) {
+        Professor.session = session;
     }
 }

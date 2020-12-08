@@ -68,6 +68,6 @@ class ClientTest {
     void tearUp() {
         Client.setRegistry(null);
         Client.setSystem(new AdaptSystem());
-        Client.setClientPromise(new ClientPromiseImpl());
+        Client.setClientPromise(null);
     }
 }

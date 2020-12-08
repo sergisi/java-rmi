@@ -8,15 +8,19 @@ import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
+import java.rmi.server.UnicastRemoteObject;
 
 public class Client {
 
     private static AdaptSystem system = new AdaptSystem();
     private static Registry registry;
-    private static ClientPromiseImpl clientPromise = new ClientPromiseImpl();
+    private static ClientPromiseImpl clientPromise;
 
     public static void main(String[] args) {
         try {
+            if (clientPromise == null) {
+                clientPromise = new ClientPromiseImpl();
+            }
             SessionMaker sessionMaker = getSessionMaker();
             String idStudent = startExam(sessionMaker, clientPromise);
             answerExam(sessionMaker, clientPromise, idStudent);

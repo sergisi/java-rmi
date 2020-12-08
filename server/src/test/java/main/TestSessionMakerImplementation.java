@@ -7,6 +7,7 @@ import exceptions.ExamHasFinishedException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.NoSuchElementException;
@@ -22,7 +23,7 @@ public class TestSessionMakerImplementation {
     AdaptSystem sysMock;
 
     @BeforeEach
-    public void setUp() throws BadQuestionException {
+    public void setUp() throws BadQuestionException, RemoteException {
         q1Mock = mock(Question.class);
         q2Mock = mock(Question.class);
         ArrayList<Question> questions = new ArrayList<>();
@@ -161,7 +162,7 @@ public class TestSessionMakerImplementation {
     }
 
     @Test
-    public void testFinishExam() {
+    public void testFinishExam() throws RemoteException {
         String idStudent = "hola";
         ClientPromise clientMock = mock(ClientPromise.class);
         newSession.newSession(idStudent, clientMock);
@@ -174,7 +175,7 @@ public class TestSessionMakerImplementation {
     }
 
     @Test
-    public void testStartExam() {
+    public void testStartExam() throws RemoteException {
         String idStudent = "hola";
         ClientPromise clientMock = mock(ClientPromise.class);
         newSession.newSession(idStudent, clientMock);
@@ -188,7 +189,7 @@ public class TestSessionMakerImplementation {
     }
 
     @Test
-    public void testFinishExamMakesNotWorkEverythingElse() {
+    public void testFinishExamMakesNotWorkEverythingElse() throws RemoteException {
         String idStudent = "hola";
         ClientPromise clientMock = mock(ClientPromise.class);
         newSession.newSession(idStudent, clientMock);

@@ -5,10 +5,12 @@ import common.ClientPromise;
 import common.SessionMaker;
 import exceptions.ExamHasFinishedException;
 
+import java.rmi.RemoteException;
+import java.rmi.server.UnicastRemoteObject;
 import java.util.*;
 import java.util.stream.Stream;
 
-public class SessionMakerImplementation implements SessionMaker {
+public class SessionMakerImplementation extends UnicastRemoteObject implements SessionMaker {
 
     private final List<Question> questions;
     private final HashMap<String, UserSession> users;
@@ -17,11 +19,12 @@ public class SessionMakerImplementation implements SessionMaker {
     private boolean examStarted;
     private final AdaptSystem sys;
 
-    public SessionMakerImplementation(List<Question> questions) {
+    public SessionMakerImplementation(List<Question> questions) throws RemoteException {
         this(questions, new AdaptSystem());
     }
 
-    public SessionMakerImplementation(List<Question> questions, AdaptSystem sys) {
+    public SessionMakerImplementation(List<Question> questions, AdaptSystem sys) throws RemoteException {
+        super();
         this.questions = questions;
         this.users = new HashMap<>();
         this.clients = new HashMap<>();
@@ -66,7 +69,20 @@ public class SessionMakerImplementation implements SessionMaker {
     public boolean hasNext(String idStudent) {
         UserSession currentSession = users.get(idStudent);
         Integer currentAnswer = currentSession.getActualQuestion();
-        return !examFinished && currentAnswer < questions.size();
+        boolean result = !examFinished && currentAnswer < questions.size();
+        if (!result) {
+            finishStudentExam(idStudent);
+        }
+        return result;
+    }
+
+    private void finishStudentExam(String idStudent) {
+        Integer correctAnswers = users.get(idStudent).getActualQuestion();
+        try {
+            clients.get(idStudent).finishExam(correctAnswers, questions.size());
+        } catch (RemoteException ignored) {
+
+        }
     }
 
     @Override
@@ -88,8 +104,7 @@ public class SessionMakerImplementation implements SessionMaker {
         this.examFinished = true;
         Set<String> idStudents = clients.keySet();
         for (String idStudent : idStudents) {
-            Integer correctAnswers = users.get(idStudent).getActualQuestion();
-            clients.get(idStudent).finishExam(correctAnswers, questions.size());
+            finishStudentExam(idStudent);
         }
     }
 
@@ -105,7 +120,12 @@ public class SessionMakerImplementation implements SessionMaker {
         this.examStarted = true;
         Set<String> idStudents = clients.keySet();
         for (String idStudent : idStudents) {
-            clients.get(idStudent).startExam();
+
+            try {
+                clients.get(idStudent).startExam();
+            } catch (RemoteException ignored) {
+
+            }
         }
     }
 

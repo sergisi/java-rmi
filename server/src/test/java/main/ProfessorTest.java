@@ -32,7 +32,7 @@ class ProfessorTest {
         Professor.setParser(parser);
         Professor.setRegistry(registry);
         Professor.setSys(sys);
-        Professor.setSessionMaker(ignored -> sessionMaker);
+        Professor.setSession(sessionMaker);
         printW = mock(PrintWriter.class);
     }
 
@@ -41,7 +41,7 @@ class ProfessorTest {
         Professor.setSys(new AdaptSystem());
         Professor.setParser(new AdaptParse());
         Professor.setRegistry(null);
-        Professor.setSessionMaker(SessionMakerImplementation::new);
+        Professor.setSession(null);
     }
 
     @Test

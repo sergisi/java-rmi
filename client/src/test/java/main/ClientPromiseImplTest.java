@@ -5,6 +5,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
+import java.rmi.RemoteException;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -16,7 +17,7 @@ class ClientPromiseImplTest {
 
 
     @BeforeEach
-    void setUp() {
+    void setUp() throws RemoteException {
         systemMock = mock(AdaptSystem.class);
         client = new ClientPromiseImpl();
     }
@@ -30,7 +31,7 @@ class ClientPromiseImplTest {
     }
 
     @Test
-    void startExam() {
+    void startExam() throws RemoteException {
         client = spy(ClientPromiseImpl.class);
         client.startExam();
         synchronized (client) {
