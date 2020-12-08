@@ -67,7 +67,7 @@ return """ Question
 + [X] Make the fields
 + [X] Make the methods
   
-**** TODO Make tests for SessionMakerImpl
+**** DONE Make tests for SessionMakerImpl
 + [X] Test newSession:
   - [X] Adds an entry to users, with the passes Id and a new UserSession.
   - [X] Test that this behavior with more than one user.
@@ -82,15 +82,15 @@ return """ Question
   - [X] Test that it calls
     + [X] ~UserSession.getActualAnswer~ is called
   - [X] Returns that the ~actualQuestion~ is smaller than ~question~
-+ [-] Test ~next~
++ [X] Test ~next~
   - [X] Returns a ~Question~
-  - [ ] Throws an error if the ~Question~ does not exist
-+ [-] Test ~finishExam~.
+  - [X] Throws an error if the ~Question~ does not exist
++ [X] Test ~finishExam~.
   - [X] Test that calls all finishExam that are in the map, even if some fail with a remote exception.
-  - [ ] Test that calls after finishExam will render to nothing.
+  - [X] Test that calls after finishExam will render to nothing.
 + [X] Test ~startExam~: It calls all ~ClientPromise.startExam~.
 
-**** TODO Implement SessionMakerImpl
+**** DONE Implement SessionMakerImpl
 + [X] ~answerQuestion~
 + [X] ~newSession~
 + [X] ~hasNext~
@@ -110,6 +110,33 @@ main = do
     finishTheExam <- readLn
     finishExam outputfile session
   #+end_src
+To test this pseudocode, we will need a class that
+encapsulates the parsing. We will make an ~AdaptateSystem~
+and we will also make a ~ParseQuestions~. Both classes
+should be only for static methods, but Java 1.8 makes it
+hard to test them (it is only on later versions that you
+can mock them easily with mockito), so we will make use
+of this classes.
+
+#+begin_src plantuml :dir doc :file img/uml-adaptete.png
+
+!define BASEPATH .
+!include BASEPATH/global/stylesheet.puml
+
+class AdaptateSystem {
+    + readLn() : String
+    + printLn(line: String): void
+}
+
+class ParseQuestions {
+    + parseQuestionsFile(filepath: String): List<Question>
+}
+#+end_src
+
+#+attr_org: :width 500
+#+RESULTS:
+[[file:doc/img/uml-adaptete.png]]
+
 **** TODO Implement Professor
 
 *** DONE Make Client
@@ -140,7 +167,7 @@ main = do
             answer <- readLn
             sessionMaker.answerQuestion(id, answer)
 #+end_src
-**** TODO Test that even when an error is thrown the client checks if the exam has finished
+**** DONE Test that even when an error is thrown the client checks if the exam has finished
 ** Technologies used
 - For the executable project, we used the technologies:
   + Java 1.8
