@@ -1,5 +1,6 @@
 package main;
 
+import adaptators.AdaptSystem;
 import common.ClientPromise;
 import exceptions.BadQuestionException;
 import exceptions.ExamHasFinishedException;
@@ -18,6 +19,7 @@ public class TestSessionMakerImplementation {
     SessionMakerImplementation newSession;
     Question q1Mock;
     Question q2Mock;
+    AdaptSystem sysMock;
 
     @BeforeEach
     public void setUp() throws BadQuestionException {
@@ -26,7 +28,8 @@ public class TestSessionMakerImplementation {
         ArrayList<Question> questions = new ArrayList<>();
         questions.add(q1Mock);
         questions.add(q2Mock);
-        newSession = new SessionMakerImplementation(questions);
+        sysMock = mock(AdaptSystem.class);
+        newSession = new SessionMakerImplementation(questions, sysMock);
     }
 
     @Test
@@ -37,6 +40,7 @@ public class TestSessionMakerImplementation {
         HashMap<String, ClientPromise> clients = newSession.getClients();
         HashMap<String, UserSession> users = newSession.getUsers();
         assertTrue(clients.containsKey(idStudent) && users.containsKey(idStudent));
+        verify(sysMock).println("A new Student has connected. There are 1 students");
     }
 
 
@@ -53,7 +57,9 @@ public class TestSessionMakerImplementation {
         newSession.newSession(idStudent2, client2);
         clients = newSession.getClients();
         users = newSession.getUsers();
-        assertTrue(clients.containsKey(idStudent2) && users.containsKey(idStudent2));
+        assertTrue(clients.containsKey(idStudent2));
+        assertTrue(users.containsKey(idStudent2));
+        verify(sysMock).println("A new Student has connected. There are 2 students");
     }
 
     @Test

@@ -1,28 +1,33 @@
 package main;
 
+import adaptators.AdaptSystem;
 import common.ClientPromise;
 import common.SessionMaker;
 import exceptions.ExamHasFinishedException;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.NoSuchElementException;
-import java.util.Set;
+import java.util.*;
+import java.util.stream.Stream;
 
 public class SessionMakerImplementation implements SessionMaker {
 
-    private final ArrayList<Question> questions;
+    private final List<Question> questions;
     private final HashMap<String, UserSession> users;
     private final HashMap<String, ClientPromise> clients;
     private boolean examFinished;
     private boolean examStarted;
+    private final AdaptSystem sys;
 
-    public SessionMakerImplementation(ArrayList<Question> questions) {
+    public SessionMakerImplementation(List<Question> questions) {
+        this(questions, new AdaptSystem());
+    }
+
+    public SessionMakerImplementation(List<Question> questions, AdaptSystem sys) {
         this.questions = questions;
         this.users = new HashMap<>();
         this.clients = new HashMap<>();
         this.examStarted = false;
         this.examFinished = false;
+        this.sys = sys;
     }
 
     @Override
@@ -33,6 +38,7 @@ public class SessionMakerImplementation implements SessionMaker {
             }
             synchronized (clients) {
                 clients.put(idStudent, client);
+                sys.println("A new Student has connected. There are " + clients.size() + " students");
             }
         }
     }
@@ -85,6 +91,14 @@ public class SessionMakerImplementation implements SessionMaker {
             Integer correctAnswers = users.get(idStudent).getActualQuestion();
             clients.get(idStudent).finishExam(correctAnswers, questions.size());
         }
+    }
+
+    protected Stream<Map.Entry<String, UserSession>> getResults() {
+        return this.users.entrySet().stream();
+    }
+
+    protected int getNumberOfQuestions() {
+        return this.questions.size();
     }
 
     protected void startExam() {

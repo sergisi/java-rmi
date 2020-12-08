@@ -68,11 +68,12 @@ return """ Question
 + [X] Make the methods
   
 **** DONE Make tests for SessionMakerImpl
-+ [X] Test newSession:
++ [-] Test newSession:
   - [X] Adds an entry to users, with the passes Id and a new UserSession.
   - [X] Test that this behavior with more than one user.
   - [X] Test that a student that tries to create a session for the second time does not break anything.
   - [X] Adds an entry to the client map.
+  - [ ] Prints to the professor the number of Clients that has been connected.
     
 + [X] Test answerQuestion
   - [X] test that an answer calls:

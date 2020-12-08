@@ -1,6 +1,7 @@
 package adaptators;
 
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.List;
@@ -20,6 +21,10 @@ public class AdaptSystem {
 
     public List<String> getContents(String filepath) throws IOException {
         return Files.lines(Paths.get(filepath)).collect(Collectors.toList());
+    }
+
+    public PrintWriter getOutputFile(String filepath) throws  IOException {
+        return new PrintWriter(filepath);
     }
 }
 

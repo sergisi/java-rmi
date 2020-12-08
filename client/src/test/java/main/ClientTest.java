@@ -2,6 +2,7 @@ package main;
 
 import adaptators.AdaptSystem;
 import common.SessionMaker;
+import exceptions.ExamHasFinishedException;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -32,8 +33,8 @@ class ClientTest {
     }
 
     @Test
-    void main() throws RemoteException, NotBoundException {
-        whenInitilize();
+    void main() throws RemoteException, NotBoundException, ExamHasFinishedException {
+        whenInitialize();
         Client.main(new String[0]);
         verify(sysMock).printLn("Put your id for this session");
         verify(sysMock).printLn("Question");
@@ -41,7 +42,7 @@ class ClientTest {
         verify(sysMock).printLn("The exam has finished, you have a score of 1/3");
     }
 
-    private void whenInitilize() {
+    private void whenInitialize() throws ExamHasFinishedException {
         when(sysMock.readLn()).thenReturn("1234")
                 .thenReturn("1")
                 .thenReturn("2");
