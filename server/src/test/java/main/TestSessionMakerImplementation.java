@@ -1,7 +1,7 @@
 package main;
 
 import common.ClientPromise;
-import exceptions.BadQuestionExceptions;
+import exceptions.BadQuestionException;
 import exceptions.ExamHasFinishedException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -20,7 +20,7 @@ public class TestSessionMakerImplementation {
     Question q2Mock;
 
     @BeforeEach
-    public void setUp() throws BadQuestionExceptions {
+    public void setUp() throws BadQuestionException {
         q1Mock = mock(Question.class);
         q2Mock = mock(Question.class);
         ArrayList<Question> questions = new ArrayList<>();

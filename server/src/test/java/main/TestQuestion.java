@@ -1,6 +1,6 @@
 package main;
 
-import exceptions.BadQuestionExceptions;
+import exceptions.BadQuestionException;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -44,9 +44,9 @@ public class TestQuestion {
     }
 
     @Test
-    void testParseLine() throws BadQuestionExceptions {
-        assertThrows(BadQuestionExceptions.class, () -> Question.parseLine(questionTextNoChoice));
-        assertThrows(BadQuestionExceptions.class, () -> Question.parseLine(questionTextOneChoice));
+    void testParseLine() throws BadQuestionException {
+        assertThrows(BadQuestionException.class, () -> Question.parseLine(questionTextNoChoice));
+        assertThrows(BadQuestionException.class, () -> Question.parseLine(questionTextOneChoice));
         Question question1 = new Question(resultParseQuestionTwoChoices, correctAnswer);
         Question question2 = new Question(resultParseQuestionThreeChoices, correctAnswer);
         Question question3 = new Question(resultParseQuestionFourChoices, correctAnswer);
@@ -56,8 +56,8 @@ public class TestQuestion {
     }
 
     @Test
-    void testQuestion() throws BadQuestionExceptions {
-        assertThrows(BadQuestionExceptions.class, () -> Question.parseLine("Hola que tal?"));
+    void testQuestion() throws BadQuestionException {
+        assertThrows(BadQuestionException.class, () -> Question.parseLine("Hola que tal?"));
     }
 
 }

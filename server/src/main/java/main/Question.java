@@ -1,6 +1,6 @@
 package main;
 
-import exceptions.BadQuestionExceptions;
+import exceptions.BadQuestionException;
 
 import java.util.Objects;
 
@@ -23,10 +23,10 @@ public class Question {
     }
 
     //main.Question?;choice1;choice2;choice3;...;correct_answer_number.
-    public static Question parseLine(String question) throws BadQuestionExceptions {
+    public static Question parseLine(String question) throws BadQuestionException {
         String [] splitQuestion = question.split(";");
         if(splitQuestion.length < 4){
-            throw new BadQuestionExceptions("Not a valid main.Question");
+            throw new BadQuestionException("Not a valid main.Question");
         }
         String questionStatement = splitQuestion[0];
         Integer correct_answer = Integer.parseInt(splitQuestion[splitQuestion.length-1]);

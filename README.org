@@ -126,6 +126,7 @@ of this classes.
 class AdaptateSystem {
     + readLn() : String
     + printLn(line: String): void
+    + getContents(path: String): List<String>
 }
 
 class ParseQuestions {
