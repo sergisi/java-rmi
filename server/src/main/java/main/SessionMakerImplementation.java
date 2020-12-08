@@ -2,6 +2,7 @@ package main;
 
 import common.ClientPromise;
 import common.SessionMaker;
+import exceptions.ExamHasFinishedException;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -37,7 +38,8 @@ public class SessionMakerImplementation implements SessionMaker {
     }
 
     @Override
-    public void answerQuestion(String idStudent, Integer answer) {
+    public void answerQuestion(String idStudent, Integer answer) throws ExamHasFinishedException {
+        hasExamFinishedThenThrow();
         UserSession actualUserSession = users.get(idStudent);
         Integer actualQuestion = actualUserSession.getActualQuestion();
         Question question = questions.get(actualQuestion);
@@ -45,6 +47,12 @@ public class SessionMakerImplementation implements SessionMaker {
             users.put(idStudent, question.isCorrectAnswer(answer) ?
                     actualUserSession.nextQuestionCorrect()
                     : actualUserSession.nextQuestion());
+        }
+    }
+
+    private void hasExamFinishedThenThrow() throws ExamHasFinishedException {
+        if (examFinished) {
+            throw new ExamHasFinishedException("The exam has finished.");
         }
     }
 
@@ -56,13 +64,18 @@ public class SessionMakerImplementation implements SessionMaker {
     }
 
     @Override
-    public String next(String idStudent) {
+    public String next(String idStudent) throws ExamHasFinishedException {
+        isOkayNext(idStudent);
         UserSession currentSession = users.get(idStudent);
         Integer currentQuestion = currentSession.getActualQuestion();
+        return questions.get(currentQuestion).getQuestion();
+    }
+
+    private void isOkayNext(String idStudent) throws ExamHasFinishedException {
+        hasExamFinishedThenThrow();
         if (!this.hasNext(idStudent)) {
             throw new NoSuchElementException("There is no next question.");
         }
-        return questions.get(currentQuestion).getQuestion();
     }
 
     protected void finishExam() {
