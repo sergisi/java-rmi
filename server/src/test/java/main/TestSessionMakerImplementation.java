@@ -1,10 +1,7 @@
 package main;
 
-import Common.ClientPromise;
-import Exceptions.BadQuestionExceptions;
-import main.Question;
-import main.SessionMakerImplementation;
-import main.UserSession;
+import common.ClientPromise;
+import exceptions.BadQuestionExceptions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

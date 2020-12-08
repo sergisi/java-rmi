@@ -1,6 +1,6 @@
 package main;
 
-import Exceptions.BadQuestionExceptions;
+import exceptions.BadQuestionExceptions;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;

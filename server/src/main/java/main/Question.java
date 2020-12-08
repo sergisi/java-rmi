@@ -1,9 +1,8 @@
 package main;
 
-import Exceptions.BadQuestionExceptions;
+import exceptions.BadQuestionExceptions;
 
 import java.util.Objects;
-import java.util.stream.IntStream;
 
 public class Question {
 

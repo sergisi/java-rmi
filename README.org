@@ -55,18 +55,15 @@ return """ Question
 + [X] Make question final
 + [X] Make the fields
 + [X] Make the methods
-+ [X] Make the static function parseLine, that given a question
-  line parses a String
++ [X] Make the static function parseLine, that given a question line parses a String
   
 **** DONE Make tests for UserSession
-+ [X] Test Creation of UserSession: integers are 0 and 0,
-  and different creations the UserSession are equal.
++ [X] Test Creation of UserSession: integers are 0 and 0, and different creations the UserSession are equal.
 + [X] Test nextQuestionCorrect: both integers are summed 1 and 1.
 + [X] Test nextQuestion: only the actual question is incremented.
   
 **** DONE Make UserSession
-+ [X] Make the UserSession final: this will let the compiler make
-  the necessary optimizations.
++ [X] Make the UserSession final: this will let the compiler make the necessary optimizations.
 + [X] Make the fields
 + [X] Make the methods
   
@@ -79,20 +76,18 @@ return """ Question
     
 + [X] Test answerQuestion
   - [X] test that an answer calls:
-    + [X] The corresponding ~Question~ with ~isCorrectAnswer~. Make an interface to test
-      this.
-    + [X] The corresponding ~UserSession~ calls ~nextQuestionCorrect~ if ~isCorrectAnswer~ is
-      ~True~, and ~nextQuestion~ if ~isCorrectAnswer~ is ~False~.
-+ [ ] Test ~hasNext~
+    + [X] The corresponding ~Question~ with ~isCorrectAnswer~. Make an interface to test this.
+    + [X] The corresponding ~UserSession~ calls ~nextQuestionCorrect~ if ~isCorrectAnswer~ is ~True~, and ~nextQuestion~ if ~isCorrectAnswer~ is ~False~.
++ [X] Test ~hasNext~
   - [X] Test that it calls
     + [X] ~UserSession.getActualAnswer~ is called
-  - [] Returns that the ~actualQuestion~ is smaller than ~question~
-+ [ ] Test ~next~
+  - [X] Returns that the ~actualQuestion~ is smaller than ~question~
++ [-] Test ~next~
   - [X] Returns a ~Question~
   - [ ] Throws an error if the ~Question~ does not exist
-+ [X] Test ~finishExam~.
-  - [X] Test that calls all finishExam that are in the map, even if some fail
-    with a remote exception.
++ [-] Test ~finishExam~.
+  - [X] Test that calls all finishExam that are in the map, even if some fail with a remote exception.
+  - [ ] Test that calls after finishExam will render to nothing.
 + [X] Test ~startExam~: It calls all ~ClientPromise.startExam~.
 
 **** TODO Implement SessionMakerImpl
@@ -145,7 +140,7 @@ main = do
             answer <- readLn
             sessionMaker.answerQuestion(id, answer)
 #+end_src
-
+**** TODO Test that even when an error is thrown the client checks if the exam has finished
 ** Technologies used
 - For the executable project, we used the technologies:
   + Java 1.8
