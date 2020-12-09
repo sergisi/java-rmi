@@ -21,9 +21,7 @@ if you have trouble to see the diagram in the PDF.
   workflow.
 
 + Even though the workflow is well seen in the UML sequence, one thing that we would 
-  like to point out is that we do the loop with the use of an iterator. And also that
-  the client is making an aditional pulling to the server in order to know when the exam
-  is finished while he is still answering some questions.
+  like to point out is that we do the loop with the use of an iterator.
 
 
 #+begin_src plantuml :file img/uml-flow.png :dir .
