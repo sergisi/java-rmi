@@ -87,17 +87,15 @@ public class SessionMakerImplementation extends UnicastRemoteObject implements S
 
     @Override
     public String next(String idStudent) throws ExamHasFinishedException {
-        isOkayNext(idStudent);
         UserSession currentSession = users.get(idStudent);
         Integer currentQuestion = currentSession.getActualQuestion();
+        isOkayNext(currentQuestion);
         return questions.get(currentQuestion).getQuestion();
     }
 
-    private void isOkayNext(String idStudent) throws ExamHasFinishedException {
+    private void isOkayNext(Integer currentQuestion) throws ExamHasFinishedException {
         hasExamFinishedThenThrow();
-        UserSession currentSession = users.get(idStudent);
-        Integer currentAnswer = currentSession.getActualQuestion();
-        boolean result = !examFinished && currentAnswer < questions.size();
+        boolean result = !examFinished && currentQuestion < questions.size();
         if (!result) {
             throw new NoSuchElementException("There is no next question.");
         }
