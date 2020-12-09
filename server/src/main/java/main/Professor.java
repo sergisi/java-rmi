@@ -10,7 +10,6 @@ import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.util.List;
-import java.util.function.Function;
 
 public class Professor {
 
@@ -21,7 +20,7 @@ public class Professor {
 
     public static void main(String[] args) {
         if (args.length != 2) {
-            sys.println("Please pass two arguments: <inputFile> <outputFile>");
+            sys.printLn("Please pass two arguments: <inputFile> <outputFile>");
             return;
         }
         try {
@@ -40,13 +39,13 @@ public class Professor {
     }
 
     private static void startExam(SessionMakerImplementation session) {
-        sys.println("To start the exam press enter");
+        sys.printLn("To start the exam press enter");
         sys.readLn();
         session.startExam();
     }
 
     private static void finishExam(SessionMakerImplementation session) {
-        sys.println("To finish the exam press enter");
+        sys.printLn("To finish the exam press enter");
         sys.readLn();
         session.finishExam();
     }
@@ -62,7 +61,7 @@ public class Professor {
                         "; " + numberOfQuestions +
                         "; " + 10 * correctAnswers / (double) numberOfQuestions);
             });
-            sys.println("The exam has finished, the results can be found at: " + arg);
+            sys.printLn("The exam has finished, the results can be found at: " + arg);
         } catch (IOException e) {
             e.printStackTrace();
         }

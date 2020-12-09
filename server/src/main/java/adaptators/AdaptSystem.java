@@ -7,11 +7,10 @@ import java.nio.file.Paths;
 import java.util.List;
 import java.util.Scanner;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 public class AdaptSystem {
 
-    public void println(String line) {
+    public void printLn(String line) {
         System.out.println(line);
     }
 

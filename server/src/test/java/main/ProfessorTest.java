@@ -49,8 +49,8 @@ class ProfessorTest {
         whenInitialize();
         Professor.main(new String[]{"inputFile", "outputFile"});
         verify(sys, times(2)).readLn();
-        verify(sys).println("To start the exam press enter");
-        verify(sys).println("To finish the exam press enter");
+        verify(sys).printLn("To start the exam press enter");
+        verify(sys).printLn("To finish the exam press enter");
         verify(printW).println("Student Id; Correct Question; Total Questions; Score");
         verify(printW).println("Hola; 2; 3; 6.666666666666667");
     }
@@ -100,6 +100,6 @@ class ProfessorTest {
     @Test
     void mainWith0Arguments() {
         Professor.main(new String[0]);
-        verify(sys).println("Please pass two arguments: <inputFile> <outputFile>");
+        verify(sys).printLn("Please pass two arguments: <inputFile> <outputFile>");
     }
 }

@@ -41,7 +41,7 @@ public class SessionMakerImplementation extends UnicastRemoteObject implements S
             }
             synchronized (clients) {
                 clients.put(idStudent, client);
-                sys.println("A new Student has connected. There are " + clients.size() + " students");
+                sys.printLn("A new Student has connected. There are " + clients.size() + " students");
             }
         }
     }

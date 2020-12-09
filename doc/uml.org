@@ -66,6 +66,7 @@ Student <-- Client: Finished exam with score x/y
 
 Professor <-- Server: Scores for the exam.
 deactivate RMIRegistry
+
 #+end_src
 
 #+RESULTS:
@@ -169,23 +170,25 @@ Question?
 !define BASEPATH .
 !include BASEPATH/global/stylesheet.puml
 
-note top of SessionMaker : type alias IdStudent = String
-interface SessionMaker {
+note top of common.SessionMaker : type alias IdStudent = String
+interface common.SessionMaker {
     + newSession(idStudet: IdStudent, client: ClientPromise): void
     + answerQuestion(idStudent: IdStudent, answer: Integer): void
     + hasNext(idStudent: IdStudent): Boolean
     + next(idStudent: IdStudent): String
 }
 
-class SessionMakerImpl {
+class server.main.SessionMakerImpl {
     - question: ArrayList<Question>
     - users: HashMap<IdStudent, UserSession>
     - client: HashMap<IdStudent, ClientPromise>
     ~ finishExam(): void
     ~ startExam(): void
+    ~ getNumberOfQuestion() : int
+    ~ getResults() : Stream<Map.Entry<String, UserSession>>
 }
 
-class Question {
+class server.main.Question {
     - question: String
     - correctAnswer: Integer
     + isCorrectAnswer(choice: Integer): Bool
@@ -193,57 +196,77 @@ class Question {
     + static parseLine(question: String): Question
 }
 
-class UserSession {
+class server.main.UserSession {
     - correctAnswers: Integer
     - actualQuestion: Integer
     + nextQuestionCorrect(): UserSession
     + nextQuestion(): UserSession
 }
 
-class Professor {
+class server.main.Professor {
     + static main(args: String[])
 }
 
-interface ClientPromise {
+interface common.ClientPromise {
     + finishExam(correctAnswer: Integer, totalQuestions: Integer): void
     + startExam(): void
 }
 
-class ClientPromiseImpl {
+class client.main.ClientPromiseImpl {
     
 }
 
-class Student {
+class client.main.Client {
     + static main(args: String[])
 }
 
 interface Remote {
 }
 
-Remote <|-- ClientPromise
+class adaptators.AdaptParse {
+    + parseQuestionFile(filepath: String)
+}
 
-Remote <|-- SessionMaker
+class adaptators.AdaptSystem {
+    + printLn(line: String): void
+    + readLn(): String
+    + getContents(filepath: String): List<String> 
+    + getOutputFile(filepath: String): PrintWriter
+}
+
+class UnicastRemoteObject {}
+
+UnicastRemoteObject <|-- server.main.SessionMakerImpl
+UnicastRemoteObject <|-- client.main.ClientPromiseImpl
+
+Remote <|-- common.ClientPromise
+
+Remote <|-- common.SessionMaker
     
-SessionMakerImpl *-- Question
-SessionMakerImpl *-- UserSession
-SessionMakerImpl *-- ClientPromise
+server.main.SessionMakerImpl *-- server.main.Question
+server.main.SessionMakerImpl *-- server.main.UserSession
+server.main.SessionMakerImpl *-- common.ClientPromise
 
-SessionMaker <|-- SessionMakerImpl
+common.SessionMaker <|-- server.main.SessionMakerImpl
 
-Professor -- SessionMakerImpl
+server.main.Professor -- server.main.SessionMakerImpl
 
-ClientPromise <|-- ClientPromiseImpl
+common.ClientPromise <|-- client.main.ClientPromiseImpl
 
-Student -- SessionMaker
+client.main.Client -- common.SessionMaker
 
-Student -- ClientPromise
+client.main.Client -- common.ClientPromise
+
+adaptators.AdaptSystem -- adaptators.AdaptParse
+adaptators.AdaptSystem -- client.main.Client
+adaptators.AdaptSystem -- server.main.Professor
+adaptators.AdaptParse -- server.main.Professor
+
 #+end_src
 
-#+RESULTS:
-[[file:img/uml-classes.png]]
-
 #+caption: Class UML
-#+attr_org: :width 700
+#+attr_org: :width 500
+#+RESULTS:
 [[file:img/uml-classes.png]]
 
 

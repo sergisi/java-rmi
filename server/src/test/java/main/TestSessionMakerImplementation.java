@@ -41,7 +41,7 @@ public class TestSessionMakerImplementation {
         HashMap<String, ClientPromise> clients = newSession.getClients();
         HashMap<String, UserSession> users = newSession.getUsers();
         assertTrue(clients.containsKey(idStudent) && users.containsKey(idStudent));
-        verify(sysMock).println("A new Student has connected. There are 1 students");
+        verify(sysMock).printLn("A new Student has connected. There are 1 students");
     }
 
 
@@ -60,7 +60,7 @@ public class TestSessionMakerImplementation {
         users = newSession.getUsers();
         assertTrue(clients.containsKey(idStudent2));
         assertTrue(users.containsKey(idStudent2));
-        verify(sysMock).println("A new Student has connected. There are 2 students");
+        verify(sysMock).printLn("A new Student has connected. There are 2 students");
     }
 
     @Test
