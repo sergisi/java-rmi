@@ -15,7 +15,7 @@ public class Question {
     }
 
     public Boolean isCorrectAnswer(Integer choice){
-        return correctAnswer == choice;
+        return correctAnswer.equals(choice);
     }
 
     public String getQuestion(){

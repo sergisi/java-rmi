@@ -53,7 +53,12 @@ public class Client {
     private static void answerQuestion(SessionMaker sessionMaker, String idStudent) throws ExamHasFinishedException {
         String question = sessionMaker.next(idStudent);
         system.printLn(question);
-        Integer number = Integer.parseInt(system.readLn());
+        Integer number = null;
+        do {
+            try {
+                number = Integer.parseInt(system.readLn());
+            } catch (NumberFormatException ignored) {}
+        } while (number == null);
         sessionMaker.answerQuestion(idStudent, number);
     }
 

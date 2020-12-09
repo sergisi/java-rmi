@@ -77,7 +77,7 @@ public class SessionMakerImplementation extends UnicastRemoteObject implements S
     }
 
     private void finishStudentExam(String idStudent) {
-        Integer correctAnswers = users.get(idStudent).getActualQuestion();
+        Integer correctAnswers = users.get(idStudent).getCorrectAnswers();
         try {
             clients.get(idStudent).finishExam(correctAnswers, questions.size());
         } catch (RemoteException ignored) {
@@ -95,7 +95,10 @@ public class SessionMakerImplementation extends UnicastRemoteObject implements S
 
     private void isOkayNext(String idStudent) throws ExamHasFinishedException {
         hasExamFinishedThenThrow();
-        if (!this.hasNext(idStudent)) {
+        UserSession currentSession = users.get(idStudent);
+        Integer currentAnswer = currentSession.getActualQuestion();
+        boolean result = !examFinished && currentAnswer < questions.size();
+        if (!result) {
             throw new NoSuchElementException("There is no next question.");
         }
     }
