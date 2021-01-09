@@ -43,5 +43,34 @@ public class Http {
 
     }
 
+    public String getListSearchExams(String keyWords) throws IOException{
+        Request request = new Request.Builder()
+                .url("http://localhost:8000/exam/search?description="+keyWords.replace(" ", "%20"))
+                .get()
+                .build();
+        Response response = httpClient.newCall(request).execute();
+        if (!response.isSuccessful()) throw  new IOException("Unexpected code " + response);
+        return response.body().string();
+    }
+
+    public String getListAllExams() throws IOException{
+        Request request = new Request.Builder()
+                .url("http://localhost:8000/exam/")
+                .get()
+                .build();
+        Response response = httpClient.newCall(request).execute();
+        if (!response.isSuccessful()) throw  new IOException("Unexpected code " + response);
+        return response.body().string();
+    }
+
+    public String getExamLocationPort(String idExam) throws IOException{
+        Request request = new Request.Builder()
+                .url("http://localhost:8000/exam/"+idExam)
+                .get()
+                .build();
+        Response response = httpClient.newCall(request).execute();
+        if (!response.isSuccessful()) throw  new IOException("Unexpected code " + response);
+        return response.body().string().split("\"")[13];
+    }
 
 }

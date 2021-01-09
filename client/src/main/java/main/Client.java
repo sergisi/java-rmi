@@ -10,6 +10,7 @@ import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
+import java.util.HashMap;
 
 public class Client {
 
@@ -26,6 +27,7 @@ public class Client {
             SessionMaker sessionMaker = getSessionMaker();
             authenticate();
             String idStudent = http.getStudentId();
+            String examLocationPort = chooseExamToConnect();
             startExam(sessionMaker, clientPromise, idStudent);
             answerExam(sessionMaker, clientPromise, idStudent);
             finishExam();
@@ -42,6 +44,33 @@ public class Client {
         }catch (IOException e){
             system.exit_error();
         }
+    }
+
+    private static String chooseExamToConnect() throws IOException{
+        String exam_location_port = null;
+        system.printLn("Options:\n" +
+                " - search <key words>: In order to search an exam by it's description\n" +
+                " - list : In order to list all exams\n" +
+                " - choose: In order to choose the exam in wich you want to connect\n");
+        while (exam_location_port == null){
+            String cmd = system.readLn();
+            exam_location_port = execute_cmd(cmd);
+            System.out.println(exam_location_port);
+        }
+        return exam_location_port;
+    }
+
+    private static String execute_cmd(String cmd) throws IOException{
+        if(cmd.startsWith("search")){
+            System.out.println(http.getListSearchExams(cmd.replace("search ", "")));
+        }
+        if(cmd.startsWith("list")){
+            System.out.println(http.getListAllExams());
+        }
+        if(cmd.startsWith("choose")){
+            return http.getExamLocationPort(cmd.replace("choose ", ""));
+        }
+        return null;
     }
 
     private static void finishExam() {
