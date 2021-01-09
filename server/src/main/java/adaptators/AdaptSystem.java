@@ -25,5 +25,9 @@ public class AdaptSystem {
     public PrintWriter getOutputFile(String filepath) throws  IOException {
         return new PrintWriter(filepath);
     }
+
+    public void exit_error(){
+        System.exit(1);
+    }
 }
 
