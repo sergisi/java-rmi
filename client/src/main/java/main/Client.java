@@ -3,6 +3,7 @@ package main;
 import adaptators.AdaptSystem;
 import common.SessionMaker;
 import exceptions.ExamHasFinishedException;
+import rest.Http;
 
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
@@ -62,8 +63,14 @@ public class Client {
     }
 
     private static String startExam(SessionMaker sessionMaker, ClientPromiseImpl clientPromise) throws InterruptedException {
-        system.printLn("Put your id for this session");
-        String idStudent = system.readLn();
+        system.printLn("Put your username and password for this session");
+        String usernameStudent = system.readLn();
+        String passwordStudent = system.readLn();
+        Http http = new Http();
+        http.authenticate_student(usernameStudent, passwordStudent);
+
+        System.exit(0);
+        String idStudent = ""; //
         sessionMaker.newSession(idStudent, clientPromise);
         synchronized (clientPromise) {
             while (!clientPromise.isStartExam()) {
