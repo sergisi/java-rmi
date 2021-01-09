@@ -12,7 +12,7 @@ public class Http {
     public Http(){
     }
 
-    public void authenticate_student(String username, String password){
+    public void authenticateStudent(String username, String password){
         RequestBody body = new FormBody.Builder()
                 .add("username", username)
                 .add("password", password)
@@ -30,7 +30,7 @@ public class Http {
         }
     }
 
-    public String get_student_id() throws IOException{
+    public String getStudentId() throws IOException{
         Request request = new Request.Builder()
                 .url("http://localhost:8000/auth/user/")
                 .addHeader("Authorization", "Token "+this.token)

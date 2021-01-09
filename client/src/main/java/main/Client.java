@@ -70,8 +70,8 @@ public class Client {
         String usernameStudent = system.readLn();
         String passwordStudent = system.readLn();
         Http http = new Http();
-        http.authenticate_student(usernameStudent, passwordStudent);
-        String idStudent = http.get_student_id();
+        http.authenticateStudent(usernameStudent, passwordStudent);
+        String idStudent = http.getStudentId();
         sessionMaker.newSession(idStudent, clientPromise);
         synchronized (clientPromise) {
             while (!clientPromise.isStartExam()) {

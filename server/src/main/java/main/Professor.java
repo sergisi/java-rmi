@@ -63,12 +63,12 @@ public class Professor {
         http.authenticateProfessor(usernameProfessor, passwordProfessor);
     }
 
-    private static void createExamWs(SessionMakerImplementation session, Http http, Integer registry_port) throws IOException{
+    private static void createExamWs(SessionMakerImplementation session, Http http, Integer registryPort) throws IOException{
         sys.printLn("Give a description for the exam");
         String description = sys.readLn();
         sys.printLn("Enter the date of the exam");
         String date = sys.readLn();
-        String location = registry_port.toString();
+        String location = registryPort.toString();
         String idExam = http.createExam(description,date,location);
         session.setIdExam(idExam);
     }

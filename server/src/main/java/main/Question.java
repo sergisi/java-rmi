@@ -29,11 +29,11 @@ public class Question {
             throw new BadQuestionException("Not a valid main.Question");
         }
         String questionStatement = splitQuestion[0];
-        Integer correct_answer = Integer.parseInt(splitQuestion[splitQuestion.length-1]);
+        Integer correctAnswer = Integer.parseInt(splitQuestion[splitQuestion.length-1]);
         String[] answers = java.util.Arrays.stream(splitQuestion, 1, splitQuestion.length - 1)
                 .toArray(String[]::new);
         String parsedQuestion = parseQuestion(questionStatement, answers);
-        return new Question(parsedQuestion, correct_answer);
+        return new Question(parsedQuestion, correctAnswer);
     }
 
     private static String parseQuestion(String questionStatement, String[] answers){
