@@ -4,7 +4,9 @@ import adaptators.AdaptSystem;
 import common.ClientPromise;
 import common.SessionMaker;
 import exceptions.ExamHasFinishedException;
+import rest.Http;
 
+import java.io.IOException;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.*;
@@ -18,6 +20,7 @@ public class SessionMakerImplementation extends UnicastRemoteObject implements S
     private boolean examFinished;
     private boolean examStarted;
     private final AdaptSystem sys;
+    private String idExam;
 
     public SessionMakerImplementation(List<Question> questions) throws RemoteException {
         this(questions, new AdaptSystem());
@@ -101,10 +104,16 @@ public class SessionMakerImplementation extends UnicastRemoteObject implements S
         }
     }
 
-    protected void finishExam() {
+    protected void finishExam(Http http) {
         this.examFinished = true;
         Set<String> idStudents = clients.keySet();
         for (String idStudent : idStudents) {
+            Integer correctAnswers = users.get(idStudent).getCorrectAnswers();
+            Integer totalQuestions = questions.size();
+            Float grade = ((float)correctAnswers / (float)totalQuestions) * 10;
+            try {
+                http.uploadStudentGrade(idStudent, this.idExam, grade);
+            }catch(IOException ignore ){}
             finishStudentExam(idStudent);
         }
     }
@@ -140,5 +149,9 @@ public class SessionMakerImplementation extends UnicastRemoteObject implements S
 
     public void setUserSession(String idStudent, UserSession userState) {
         users.put(idStudent, userState);
+    }
+
+    public void setIdExam(String idExam) {
+        this.idExam = idExam;
     }
 }

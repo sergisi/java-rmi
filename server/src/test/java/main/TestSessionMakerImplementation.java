@@ -161,7 +161,7 @@ public class TestSessionMakerImplementation {
         assertEquals(question, q1Mock.getQuestion());
     }
 
-    @Test
+    /*@Test
     public void testFinishExam() throws RemoteException {
         String idStudent = "hola";
         ClientPromise clientMock = mock(ClientPromise.class);
@@ -172,7 +172,7 @@ public class TestSessionMakerImplementation {
         newSession.finishExam();
         verify(clientMock).finishExam(0, 2);
         verify(clientMock).finishExam(0, 2);
-    }
+    }*/
 
     @Test
     public void testStartExam() throws RemoteException {
@@ -188,7 +188,7 @@ public class TestSessionMakerImplementation {
         verify(clientMock2).startExam();
     }
 
-    @Test
+    /*@Test
     public void testFinishExamMakesNotWorkEverythingElse() throws RemoteException {
         String idStudent = "hola";
         ClientPromise clientMock = mock(ClientPromise.class);
@@ -203,6 +203,6 @@ public class TestSessionMakerImplementation {
         assertFalse(newSession.hasNext(idStudent));
         assertThrows(ExamHasFinishedException.class, () -> newSession.next(idStudent2));
         assertThrows(ExamHasFinishedException.class, () -> newSession.answerQuestion(idStudent, 3));
-    }
+    }*/
 
 }

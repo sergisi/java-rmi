@@ -5,6 +5,7 @@ import common.SessionMaker;
 import exceptions.ExamHasFinishedException;
 import rest.Http;
 
+import java.io.IOException;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
@@ -25,7 +26,7 @@ public class Client {
             String idStudent = startExam(sessionMaker, clientPromise);
             answerExam(sessionMaker, clientPromise, idStudent);
             finishExam();
-        } catch (RemoteException | NotBoundException | InterruptedException e) {
+        } catch (RemoteException | NotBoundException | InterruptedException e ) {
             if (clientPromise.isExamFinished()) {
                 finishExam();
             }
@@ -35,6 +36,8 @@ public class Client {
             if (clientPromise.isExamFinished()) {
                 finishExam();
             }
+        }catch (IOException e){
+            System.exit(1);
         }
     }
 
@@ -62,15 +65,13 @@ public class Client {
         sessionMaker.answerQuestion(idStudent, number);
     }
 
-    private static String startExam(SessionMaker sessionMaker, ClientPromiseImpl clientPromise) throws InterruptedException {
+    private static String startExam(SessionMaker sessionMaker, ClientPromiseImpl clientPromise) throws InterruptedException, IOException{
         system.printLn("Put your username and password for this session");
         String usernameStudent = system.readLn();
         String passwordStudent = system.readLn();
         Http http = new Http();
         http.authenticate_student(usernameStudent, passwordStudent);
-
-        System.exit(0);
-        String idStudent = ""; //
+        String idStudent = http.get_student_id();
         sessionMaker.newSession(idStudent, clientPromise);
         synchronized (clientPromise) {
             while (!clientPromise.isStartExam()) {

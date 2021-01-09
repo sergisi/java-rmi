@@ -2,6 +2,7 @@ package main;
 
 import adaptators.AdaptParse;
 import adaptators.AdaptSystem;
+import rest.Http;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -9,6 +10,7 @@ import java.rmi.AlreadyBoundException;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
+import java.util.HashMap;
 import java.util.List;
 
 public class Professor {
@@ -23,31 +25,58 @@ public class Professor {
             sys.printLn("Please pass two arguments: <inputFile> <outputFile>");
             return;
         }
+        Http http = new Http();
+        authenticate(http);
         try {
             if (Professor.session == null)
                 session = initializeSession(args[0]);
             if (registry == null) {
+                sys.printLn("");
                 registry = startRegistry();
+            }
+            try {
+                createExamWs(session, http, registry.REGISTRY_PORT);
+            }catch (IOException e){
+                e.printStackTrace();
+                System.exit(1);
             }
             registry.bind("SessionMaker", session);
             startExam(session);
-            finishExam(session);
+            finishExam(session, http);
             saveExam(args[1], session);
         } catch (RemoteException | AlreadyBoundException e) {
             e.printStackTrace();
         }
     }
 
-    private static void startExam(SessionMakerImplementation session) {
+    private static void startExam(SessionMakerImplementation session){
         sys.printLn("To start the exam press enter");
         sys.readLn();
         session.startExam();
     }
 
-    private static void finishExam(SessionMakerImplementation session) {
+    private static void authenticate(Http http){
+        sys.printLn("Put your username");
+        String usernameProfessor = sys.readLn();
+        sys.printLn("Put your password");
+        String passwordProfessor = sys.readLn();
+        http.authenticateProfessor(usernameProfessor, passwordProfessor);
+    }
+
+    private static void createExamWs(SessionMakerImplementation session, Http http, Integer registry_port) throws IOException{
+        sys.printLn("Give a description for the exam");
+        String description = sys.readLn();
+        sys.printLn("Enter the date of the exam");
+        String date = sys.readLn();
+        String location = registry_port.toString();
+        String idExam = http.createExam(description,date,location);
+        session.setIdExam(idExam);
+    }
+
+    private static void finishExam(SessionMakerImplementation session, Http http) {
         sys.printLn("To finish the exam press enter");
         sys.readLn();
-        session.finishExam();
+        session.finishExam(http);
     }
 
     private static void saveExam(String arg, SessionMakerImplementation session) {
@@ -86,7 +115,6 @@ public class Professor {
             return registry;
         }
     }
-
 
     private static SessionMakerImplementation initializeSession(String inputFile) throws RemoteException {
         List<Question> questions = parser.parseQuestionsFile(inputFile);
