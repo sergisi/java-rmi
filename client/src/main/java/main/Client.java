@@ -16,6 +16,7 @@ public class Client {
     private static AdaptSystem system = new AdaptSystem();
     private static Registry registry;
     private static ClientPromiseImpl clientPromise;
+    private static Http http = new Http();
 
     public static void main(String[] args) {
         try {
@@ -23,7 +24,9 @@ public class Client {
                 clientPromise = new ClientPromiseImpl();
             }
             SessionMaker sessionMaker = getSessionMaker();
-            String idStudent = startExam(sessionMaker, clientPromise);
+            authenticate();
+            String idStudent = http.getStudentId();
+            startExam(sessionMaker, clientPromise, idStudent);
             answerExam(sessionMaker, clientPromise, idStudent);
             finishExam();
         } catch (RemoteException | NotBoundException | InterruptedException e ) {
@@ -65,13 +68,7 @@ public class Client {
         sessionMaker.answerQuestion(idStudent, number);
     }
 
-    private static String startExam(SessionMaker sessionMaker, ClientPromiseImpl clientPromise) throws InterruptedException, IOException{
-        system.printLn("Put your username and password for this session");
-        String usernameStudent = system.readLn();
-        String passwordStudent = system.readLn();
-        Http http = new Http();
-        http.authenticateStudent(usernameStudent, passwordStudent);
-        String idStudent = http.getStudentId();
+    private static String startExam(SessionMaker sessionMaker, ClientPromiseImpl clientPromise, String idStudent) throws InterruptedException, IOException{
         sessionMaker.newSession(idStudent, clientPromise);
         synchronized (clientPromise) {
             while (!clientPromise.isStartExam()) {
@@ -79,6 +76,14 @@ public class Client {
             }
         }
         return idStudent;
+    }
+
+    private static void authenticate(){
+        system.printLn("Put your username");
+        String usernameStudent = system.readLn();
+        system.printLn("Put your password");
+        String passwordStudent = system.readLn();
+        http.authenticateStudent(usernameStudent, passwordStudent);
     }
 
     private static SessionMaker getSessionMaker() throws RemoteException, NotBoundException {
