@@ -5,6 +5,7 @@ import adaptators.AdaptSystem;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import rest.Http;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -22,6 +23,7 @@ class ProfessorTest {
     private Registry registry;
     private SessionMakerImplementation sessionMaker;
     private PrintWriter printW;
+    private Http httpMock;
 
     @BeforeEach
     void setUp() {
@@ -29,10 +31,12 @@ class ProfessorTest {
         registry = mock(Registry.class);
         parser = mock(AdaptParse.class);
         sys = mock(AdaptSystem.class);
+        httpMock = mock(Http.class);
         Professor.setParser(parser);
         Professor.setRegistry(registry);
         Professor.setSys(sys);
         Professor.setSession(sessionMaker);
+        Professor.setHttp(httpMock);
         printW = mock(PrintWriter.class);
     }
 
@@ -42,13 +46,14 @@ class ProfessorTest {
         Professor.setParser(new AdaptParse());
         Professor.setRegistry(null);
         Professor.setSession(null);
+        Professor.setHttp(new Http());
     }
 
     @Test
     void main() throws IOException {
         whenInitialize();
         Professor.main(new String[]{"inputFile", "outputFile"});
-        verify(sys, times(2)).readLn();
+        verify(sys, times(6)).readLn();
         verify(sys).printLn("To start the exam press enter");
         verify(sys).printLn("To finish the exam press enter");
         verify(printW).println("Student Id; Correct Question; Total Questions; Score");

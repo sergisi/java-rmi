@@ -26,8 +26,8 @@ public class AdaptSystem {
         return new PrintWriter(filepath);
     }
 
-    public void exit_error(){
-        System.exit(1);
+    public void exit(int statusCode){
+        System.exit(statusCode);
     }
 }
 
