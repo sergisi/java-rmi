@@ -6,7 +6,9 @@ import exceptions.BadQuestionException;
 import exceptions.ExamHasFinishedException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import rest.Http;
 
+import java.io.IOException;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -30,7 +32,7 @@ public class TestSessionMakerImplementation {
         questions.add(q1Mock);
         questions.add(q2Mock);
         sysMock = mock(AdaptSystem.class);
-        newSession = new SessionMakerImplementation(questions, sysMock);
+        newSession = new SessionMakerImplementation(questions, sysMock, "1");
     }
 
     @Test
@@ -161,18 +163,21 @@ public class TestSessionMakerImplementation {
         assertEquals(question, q1Mock.getQuestion());
     }
 
-    /*@Test
-    public void testFinishExam() throws RemoteException {
+    @Test
+    public void testFinishExam() throws IOException {
+        Http mockHttp = mock(Http.class);
         String idStudent = "hola";
         ClientPromise clientMock = mock(ClientPromise.class);
         newSession.newSession(idStudent, clientMock);
         String idStudent2 = "hola2";
         ClientPromise clientMock2 = mock(ClientPromise.class);
-        newSession.newSession(idStudent, clientMock);
-        newSession.finishExam();
+        newSession.newSession(idStudent2, clientMock2);
+        newSession.finishExam(mockHttp);
         verify(clientMock).finishExam(0, 2);
-        verify(clientMock).finishExam(0, 2);
-    }*/
+        verify(clientMock2).finishExam(0, 2);
+        verify(mockHttp).uploadStudentGrade(idStudent, "1", 0.0f);
+        verify(mockHttp).uploadStudentGrade(idStudent2, "1", 0.0f);
+    }
 
     @Test
     public void testStartExam() throws RemoteException {
@@ -188,8 +193,9 @@ public class TestSessionMakerImplementation {
         verify(clientMock2).startExam();
     }
 
-    /*@Test
-    public void testFinishExamMakesNotWorkEverythingElse() throws RemoteException {
+    @Test
+    public void testFinishExamMakesNotWorkEverythingElse() throws IOException {
+        Http httpMock = mock(Http.class);
         String idStudent = "hola";
         ClientPromise clientMock = mock(ClientPromise.class);
         newSession.newSession(idStudent, clientMock);
@@ -197,12 +203,14 @@ public class TestSessionMakerImplementation {
         ClientPromise clientMock2 = mock(ClientPromise.class);
         newSession.newSession(idStudent, clientMock);
         newSession.newSession(idStudent2, clientMock2);
-        newSession.finishExam();
+        newSession.finishExam(httpMock);
         verify(clientMock).finishExam(0, 2);
         verify(clientMock2).finishExam(0, 2);
+        verify(httpMock).uploadStudentGrade(idStudent, "1", 0.0f);
+        verify(httpMock).uploadStudentGrade(idStudent2, "1", 0.0f);
         assertFalse(newSession.hasNext(idStudent));
         assertThrows(ExamHasFinishedException.class, () -> newSession.next(idStudent2));
         assertThrows(ExamHasFinishedException.class, () -> newSession.answerQuestion(idStudent, 3));
-    }*/
+    }
 
 }

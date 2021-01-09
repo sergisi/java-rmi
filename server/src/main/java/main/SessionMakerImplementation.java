@@ -20,13 +20,13 @@ public class SessionMakerImplementation extends UnicastRemoteObject implements S
     private boolean examFinished;
     private boolean examStarted;
     private final AdaptSystem sys;
-    private String idExam;
+    private final String idExam;
 
-    public SessionMakerImplementation(List<Question> questions) throws RemoteException {
-        this(questions, new AdaptSystem());
+    public SessionMakerImplementation(List<Question> questions, String examId) throws RemoteException {
+        this(questions, new AdaptSystem(), examId);
     }
 
-    public SessionMakerImplementation(List<Question> questions, AdaptSystem sys) throws RemoteException {
+    public SessionMakerImplementation(List<Question> questions, AdaptSystem sys, String examId) throws RemoteException {
         super();
         this.questions = questions;
         this.users = new HashMap<>();
@@ -34,6 +34,7 @@ public class SessionMakerImplementation extends UnicastRemoteObject implements S
         this.examStarted = false;
         this.examFinished = false;
         this.sys = sys;
+        this.idExam = examId;
     }
 
     @Override
@@ -109,11 +110,12 @@ public class SessionMakerImplementation extends UnicastRemoteObject implements S
         Set<String> idStudents = clients.keySet();
         for (String idStudent : idStudents) {
             Integer correctAnswers = users.get(idStudent).getCorrectAnswers();
-            Integer totalQuestions = questions.size();
-            Float grade = ((float)correctAnswers / (float)totalQuestions) * 10;
+            int totalQuestions = questions.size();
+            Float grade = ((float) correctAnswers / (float) totalQuestions) * 10;
             try {
                 http.uploadStudentGrade(idStudent, this.idExam, grade);
-            }catch(IOException ignore ){}
+            } catch (IOException ignore) {
+            }
             finishStudentExam(idStudent);
         }
     }
@@ -151,7 +153,4 @@ public class SessionMakerImplementation extends UnicastRemoteObject implements S
         users.put(idStudent, userState);
     }
 
-    public void setIdExam(String idExam) {
-        this.idExam = idExam;
-    }
 }
