@@ -49,7 +49,7 @@ public class Professor {
             return createExamWs(session, http, registry.REGISTRY_PORT);
         } catch (IOException e) {
             e.printStackTrace();
-            System.exit(1);
+            sys.exit(1);
         }
         return ""; //Unreachable code.
     }

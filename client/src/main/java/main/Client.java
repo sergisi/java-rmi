@@ -37,7 +37,7 @@ public class Client {
                 finishExam();
             }
         }catch (IOException e){
-            System.exit(1);
+            system.exit_error();
         }
     }
 

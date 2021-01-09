@@ -11,4 +11,8 @@ public class AdaptSystem {
     public String readLn() {
         return new Scanner(System.in).nextLine();
     }
+
+    public void exit_error(){
+        System.exit(1);
+    }
 }
