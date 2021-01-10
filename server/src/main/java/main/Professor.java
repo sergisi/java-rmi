@@ -2,6 +2,7 @@ package main;
 
 import adaptators.AdaptParse;
 import adaptators.AdaptSystem;
+import miscelaneous.StringPair;
 import rest.Http;
 
 import java.io.IOException;
@@ -27,7 +28,9 @@ public class Professor {
         }
         authenticate(http);
         try {
-            String examId = createExamAndGetId(http);
+            StringPair examInfo = createExamAndGetId(http);
+            String examId = examInfo.first;
+            String location = examInfo.second;
             if (Professor.session == null) {
                 session = initializeSession(args[0], examId);
             }
@@ -35,7 +38,7 @@ public class Professor {
                 sys.printLn("");
                 registry = startRegistry();
             }
-            registry.bind("SessionMaker", session);
+            registry.bind(location, session);
             startExam(session);
             finishExam(session, http);
             saveExam(args[1], session);
@@ -44,14 +47,14 @@ public class Professor {
         }
     }
 
-    private static String createExamAndGetId(Http http) {
+    private static StringPair createExamAndGetId(Http http) {
         try {
-            return createExamWs(session, http, registry.REGISTRY_PORT);
+            return createExamWs(http);
         } catch (IOException e) {
             e.printStackTrace();
             sys.exit(1);
         }
-        return ""; //Unreachable code.
+        return new StringPair("", ""); //Unreachable code.
     }
 
     private static void startExam(SessionMakerImplementation session) {
@@ -61,20 +64,23 @@ public class Professor {
     }
 
     private static void authenticate(Http http) {
-        sys.printLn("Put your username");
+        sys.printLn("Enter your username");
         String usernameProfessor = sys.readLn();
-        sys.printLn("Put your password");
+        sys.printLn("Enter your password");
         String passwordProfessor = sys.readLn();
         http.authenticateProfessor(usernameProfessor, passwordProfessor);
     }
 
-    private static String createExamWs(SessionMakerImplementation session, Http http, Integer registryPort) throws IOException {
+    private static StringPair createExamWs(Http http) throws IOException {
         sys.printLn("Give a description for the exam");
         String description = sys.readLn();
         sys.printLn("Enter the date of the exam");
         String date = sys.readLn();
-        String location = registryPort.toString();
-        return http.createExam(description, date, location);
+        sys.printLn("Enter a location for the exam");
+        String location = sys.readLn();
+
+        String idExam = http.createExam(description, date, location);
+        return new StringPair(idExam, location);
     }
 
     private static void finishExam(SessionMakerImplementation session, Http http) {
@@ -113,9 +119,9 @@ public class Professor {
             return registry;
         } catch (RemoteException ex) {
             // No valid registry at that port.
-            System.out.println("RMI registry cannot be located ");
+            sys.printLn("RMI registry cannot be located ");
             Registry registry = LocateRegistry.createRegistry(port);
-            System.out.println("RMI registry created at port ");
+            sys.printLn("RMI registry created at port ");
             return registry;
         }
     }

@@ -53,9 +53,15 @@ class ProfessorTest {
     void main() throws IOException {
         whenInitialize();
         Professor.main(new String[]{"inputFile", "outputFile"});
-        verify(sys, times(6)).readLn();
+        verify(sys, times(7)).readLn();
+        verify(sys).printLn("Enter your username");
+        verify(sys).printLn("Enter your password");
+        verify(sys).printLn("Give a description for the exam");
+        verify(sys).printLn("Enter the date of the exam");
+        verify(sys).printLn("Enter a location for the exam");
         verify(sys).printLn("To start the exam press enter");
         verify(sys).printLn("To finish the exam press enter");
+        verify(sys).printLn("The exam has finished, the results can be found at: outputFile");
         verify(printW).println("Student Id; Correct Question; Total Questions; Score");
         verify(printW).println("Hola; 2; 3; 6.666666666666667");
     }
