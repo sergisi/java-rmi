@@ -32,12 +32,28 @@ participant Client order 10
 participant RMIRegistry order 15
 participant Server order 20
 actor Professor order 30
+participant WS order 12
 
+Professor -> Server : authenticate(username, password)
+Server -> WS: autheticate(username, password)
+Professor -> Server : createExam(description, time, location)
+Server -> WS: createExam(description, time, location)
 Professor -> Server : newSession(questions)
-Server -> RMIRegistry : bind("SessionMaker", sessionMaker)
+Server -> RMIRegistry : bind(idExam, sessionMaker)
 activate RMIRegistry
+        
+Student -> Client: authenticate(username, password)
+Client -> WS: authenticate(username, password)
+WS --> Client: Token
+loop not chosed exam
+    Student -> Client : searchOrListOrChoose(someParameters)
+    Client -> WS : someCommand(someParameters)
+    WS --> Client: Information about the command
+    Client --> Student: Information about the command
+end
+
 Student -> Client : newSession(idStudent)
-Client -> RMIRegistry : lookup("SessionMaker")
+Client -> RMIRegistry : lookup(idExam)
 RMIRegistry --> Client : SessionMaker class
 activate Client
 
@@ -61,20 +77,20 @@ loop hasNext(idStudent) or finished exam
 end
 
 Professor -> Server: finishExam()
+Server -> WS: uploadGrades(grades)
 Server -> Client: finishExam(correctAnswers, totalAnswers)
 
 Student <-- Client: Finished exam with score x/y
 
+        
 Professor <-- Server: Scores for the exam.
 deactivate RMIRegistry
 
 #+end_src
 
-#+RESULTS:
-[[file:img/uml-flow.png]]
-
-#+attr_org: :width 700
+#+attr_org: :width 600
 #+caption: UML Sequence diagram
+#+RESULTS:
 [[file:img/uml-flow.png]]
 
 * UML Student main test
@@ -209,6 +225,7 @@ class server.main.SessionMakerImpl {
     - question: ArrayList<Question>
     - users: HashMap<IdStudent, UserSession>
     - client: HashMap<IdStudent, ClientPromise>
+    - idExam: String
     ~ finishExam(): void
     ~ startExam(): void
     ~ getNumberOfQuestion() : int
@@ -261,6 +278,21 @@ class adaptators.AdaptSystem {
     + getOutputFile(filepath: String): PrintWriter
 }
 
+class client.rest.Http {
+        + authenticateStudent(username: String, password: String): void
+        + getStudentId(): String
+        + getListSearchExams(keywords: String): String
+        + getListAllExams(): String
+        + getExamLocation(idExam: String): String
+}
+
+class server.rest.Http {
+        + authenticateProfessor(username: String, password: String): void
+        + createExam(description: String, date: String, location: String): String
+        + uploadStudentGrade(idStudent: String, idExam: String, grade: float): void
+        + setToken(token: String): void
+}
+
 class UnicastRemoteObject {}
 
 UnicastRemoteObject <|-- server.main.SessionMakerImpl
@@ -289,10 +321,13 @@ adaptators.AdaptSystem -- client.main.Client
 adaptators.AdaptSystem -- server.main.Professor
 adaptators.AdaptParse -- server.main.Professor
 
+client.rest.Http -- client.main.Client
+server.rest.Http -- server.main.Professor
+server.rest.Http -- server.main.SessionMakerImpl
 #+end_src
 
 #+caption: Class UML
-#+attr_org: :width 500
+#+attr_org: :width 900
 #+RESULTS:
 [[file:img/uml-classes.png]]
 
