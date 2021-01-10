@@ -10,7 +10,6 @@ import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
-import java.util.HashMap;
 
 public class Client {
 
@@ -24,51 +23,52 @@ public class Client {
             if (clientPromise == null) {
                 clientPromise = new ClientPromiseImpl();
             }
-            SessionMaker sessionMaker = getSessionMaker();
             authenticate();
             String idStudent = http.getStudentId();
-            String examLocationPort = chooseExamToConnect();
+            String examLocation = chooseExamToConnect();
+            SessionMaker sessionMaker = getSessionMaker(examLocation);
             startExam(sessionMaker, clientPromise, idStudent);
             answerExam(sessionMaker, clientPromise, idStudent);
             finishExam();
-        } catch (RemoteException | NotBoundException | InterruptedException e ) {
-            if (clientPromise.isExamFinished()) {
-                finishExam();
-            }
+        } catch (NotBoundException | InterruptedException | IOException e) {
+            safeFinishExam();
             e.printStackTrace();
+            system.exit(1);
         } catch (ExamHasFinishedException e) {
-            // Is always true.
-            if (clientPromise.isExamFinished()) {
-                finishExam();
-            }
-        }catch (IOException e){
-            system.exit_error();
+            safeFinishExam();
         }
     }
 
-    private static String chooseExamToConnect() throws IOException{
-        String exam_location_port = null;
+    private static void safeFinishExam() {
+        if (clientPromise.isExamFinished()) {
+            finishExam();
+        }
+    }
+
+    private static String chooseExamToConnect() throws IOException {
+        String examLocation = null;
         system.printLn("Options:\n" +
                 " - search <key words>: In order to search an exam by it's description\n" +
                 " - list : In order to list all exams\n" +
-                " - choose: In order to choose the exam in wich you want to connect\n");
-        while (exam_location_port == null){
+                " - choose: In order to choose the exam in which you want to connect\n");
+        while (examLocation == null) {
             String cmd = system.readLn();
-            exam_location_port = execute_cmd(cmd);
-            System.out.println(exam_location_port);
+            examLocation = executeCmd(cmd);
         }
-        return exam_location_port;
+        return examLocation;
     }
 
-    private static String execute_cmd(String cmd) throws IOException{
-        if(cmd.startsWith("search")){
-            System.out.println(http.getListSearchExams(cmd.replace("search ", "")));
+    private static String executeCmd(String cmd) throws IOException {
+        if (cmd.startsWith("search")) {
+            system.printLn(http.getListSearchExams(cmd.replace("search ", "")));
         }
-        if(cmd.startsWith("list")){
-            System.out.println(http.getListAllExams());
+        if (cmd.startsWith("list")) {
+            system.printLn(http.getListAllExams());
         }
-        if(cmd.startsWith("choose")){
-            return http.getExamLocationPort(cmd.replace("choose ", ""));
+        if (cmd.startsWith("choose")) {
+            String examLocation =  http.getExamLocation(cmd.replace("choose ", ""));
+            system.printLn(examLocation);
+            return examLocation;
         }
         return null;
     }
@@ -92,12 +92,13 @@ public class Client {
         do {
             try {
                 number = Integer.parseInt(system.readLn());
-            } catch (NumberFormatException ignored) {}
+            } catch (NumberFormatException ignored) {
+            }
         } while (number == null);
         sessionMaker.answerQuestion(idStudent, number);
     }
 
-    private static String startExam(SessionMaker sessionMaker, ClientPromiseImpl clientPromise, String idStudent) throws InterruptedException, IOException{
+    private static String startExam(SessionMaker sessionMaker, ClientPromiseImpl clientPromise, String idStudent) throws InterruptedException, IOException {
         sessionMaker.newSession(idStudent, clientPromise);
         synchronized (clientPromise) {
             while (!clientPromise.isStartExam()) {
@@ -107,7 +108,7 @@ public class Client {
         return idStudent;
     }
 
-    private static void authenticate(){
+    private static void authenticate() {
         system.printLn("Put your username");
         String usernameStudent = system.readLn();
         system.printLn("Put your password");
@@ -115,11 +116,11 @@ public class Client {
         http.authenticateStudent(usernameStudent, passwordStudent);
     }
 
-    private static SessionMaker getSessionMaker() throws RemoteException, NotBoundException {
+    private static SessionMaker getSessionMaker(String examLocation) throws RemoteException, NotBoundException {
         if (registry == null) {
             registry = LocateRegistry.getRegistry();
         }
-        return (SessionMaker) registry.lookup("SessionMaker");
+        return (SessionMaker) registry.lookup(examLocation);
     }
 
     public static void setSystem(AdaptSystem sys) {
@@ -130,6 +131,9 @@ public class Client {
         registry = reg;
     }
 
+    public static void setHttp(Http http) {
+        Client.http = http;
+    }
 
     public static void setClientPromise(ClientPromiseImpl client) {
         clientPromise = client;
