@@ -12,7 +12,7 @@ public class AdaptSystem {
         return new Scanner(System.in).nextLine();
     }
 
-    public void exit_error(){
-        System.exit(1);
+    public void exit(int statusCode){
+        System.exit(statusCode);
     }
 }

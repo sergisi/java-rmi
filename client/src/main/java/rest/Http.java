@@ -63,7 +63,7 @@ public class Http {
         return response.body().string();
     }
 
-    public String getExamLocationPort(String idExam) throws IOException{
+    public String getExamLocation(String idExam) throws IOException{
         Request request = new Request.Builder()
                 .url("http://localhost:8000/exam/"+idExam)
                 .get()
