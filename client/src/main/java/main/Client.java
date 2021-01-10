@@ -98,14 +98,13 @@ public class Client {
         sessionMaker.answerQuestion(idStudent, number);
     }
 
-    private static String startExam(SessionMaker sessionMaker, ClientPromiseImpl clientPromise, String idStudent) throws InterruptedException, IOException {
+    private static void startExam(SessionMaker sessionMaker, ClientPromiseImpl clientPromise, String idStudent) throws InterruptedException, IOException {
         sessionMaker.newSession(idStudent, clientPromise);
         synchronized (clientPromise) {
             while (!clientPromise.isStartExam()) {
                 clientPromise.wait(1000); // Checks every second if the server has responded.
             }
         }
-        return idStudent;
     }
 
     private static void authenticate() {
